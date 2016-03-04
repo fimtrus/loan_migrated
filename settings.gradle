@@ -1,0 +1,3 @@
+include ':jHLibrary'
+include ':xaviRigauSynchronizedScrollinglibrary'
+include ':loan'
