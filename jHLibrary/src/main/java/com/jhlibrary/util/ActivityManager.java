@@ -1,8 +1,8 @@
 package com.jhlibrary.util;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
+
+import java.util.ArrayList;
 
 public class ActivityManager {
 	 

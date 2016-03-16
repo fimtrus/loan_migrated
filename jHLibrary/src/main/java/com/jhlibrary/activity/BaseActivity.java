@@ -4,13 +4,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.widget.Toast;
+import android.support.v4.app.FragmentActivity;
 
 import com.jhlibrary.R;
 
 /**
  * 모든 Activity의 부모 클래스.
  */
-public class BaseActivity extends android.support.v4.app.FragmentActivity {
+public class BaseActivity extends FragmentActivity {
 
 	private boolean flag;
 	private Handler mBackHandler;

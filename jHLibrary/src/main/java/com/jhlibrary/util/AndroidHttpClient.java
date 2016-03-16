@@ -16,7 +16,7 @@ package com.jhlibrary.util;
  * limitations under the License.
  */
 
-import java.io.IOException;
+import com.byarger.exchangeit.EasySSLSocketFactory;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
@@ -41,7 +41,7 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.BasicHttpProcessor;
 import org.apache.http.protocol.HttpContext;
 
-import com.byarger.exchangeit.EasySSLSocketFactory;
+import java.io.IOException;
 
 /**
  * <p>Subclass of the Apache {@link DefaultHttpClient} that is configured with

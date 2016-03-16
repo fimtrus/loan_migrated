@@ -1,8 +1,5 @@
 package com.jhlibrary.util;
 
-import java.lang.ref.WeakReference;
-import java.util.HashMap;
-
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -15,6 +12,9 @@ import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
+
+import java.lang.ref.WeakReference;
+import java.util.HashMap;
 
 public class ImageHelper {
 

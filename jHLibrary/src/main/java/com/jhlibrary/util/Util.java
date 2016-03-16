@@ -4,26 +4,6 @@
  */
 package com.jhlibrary.util;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -67,6 +47,26 @@ import com.google.android.gcm.GCMRegistrar;
 import com.jhlibrary.CommonApplication;
 import com.jhlibrary.R;
 import com.jhlibrary.constant.Key;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * 
@@ -614,7 +614,7 @@ public class Util {
     /**
      * 해당 뷰의 스크린샷을 찍어 파일로 저장한다.
      * @param view
-     * @param path
+     * @param file
      */
     public static boolean saveScreen( Context context, View view, File file ) {
     	
@@ -636,8 +636,7 @@ public class Util {
     /**
      * 해당 뷰의 스크린샷을 찍어 리턴한다.
      * @param view
-     * @param path
-     */
+	 */
     public static Bitmap snapScreen( View view ) {
     	view.setDrawingCacheEnabled(true);
     	view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
