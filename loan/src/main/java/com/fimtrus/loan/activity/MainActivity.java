@@ -1,13 +1,15 @@
-package com.fimtrus.loan;
+package com.fimtrus.loan.activity;
 
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.fimtrus.loan.R;
 import com.fimtrus.loan.fragment.ResultFragment;
 import com.fimtrus.loan.fragment.SearchFragment;
 import com.google.android.gms.ads.AdRequest;
@@ -21,6 +23,7 @@ public class MainActivity extends Activity {
 	private SearchFragment mSearchFragment;
 	private ResultFragment mResultFragment;
 	private AdView mAdMobView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,7 +42,7 @@ public class MainActivity extends Activity {
 	private void initializeFields() {
 		
 		mAdMobView = (AdView) findViewById(R.id.adView);
-		
+
 		mBackHandler = new Handler() {
 			@Override
 			public void handleMessage(Message msg) {

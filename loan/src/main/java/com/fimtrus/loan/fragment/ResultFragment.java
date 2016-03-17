@@ -20,7 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fimtrus.loan.R;
-import com.fimtrus.loan.Util;
+import com.fimtrus.loan.util.Util;
 import com.fimtrus.loan.model.Constant;
 import com.fimtrus.loan.model.RepaymentResultModel;
 

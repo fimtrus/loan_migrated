@@ -1,4 +1,4 @@
-package com.fimtrus.loan;
+package com.fimtrus.loan.util;
 
 import java.text.DecimalFormat;
 import java.util.Locale;

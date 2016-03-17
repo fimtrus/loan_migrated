@@ -7,8 +7,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -17,8 +16,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,7 +24,8 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.fimtrus.loan.R;
-import com.fimtrus.loan.Util;
+import com.fimtrus.loan.util.CalculationViewHelper;
+import com.fimtrus.loan.util.Util;
 import com.fimtrus.loan.model.Constant;
 
 /**
@@ -52,7 +50,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 	private TextView mLoanTextView;
 	private TextView mLoanNumberTextView;
 
-	@Override
+	private ViewPager mCalculationViewpager;
+    private CalculationViewHelper mCalculationViewHelper;
+
+
+    @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
@@ -89,6 +91,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 				.findViewById(R.id.textview_loans_text);
 		mLoanNumberTextView = (TextView) mRootLayout
 				.findViewById(R.id.textview_loans_number);
+
+		mCalculationViewpager = (ViewPager) mRootLayout.findViewById(R.id.viewpager_calculation);
+
 	}
 
 	private void initializeView() {
@@ -101,6 +106,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 			mLoanTextView.setVisibility(View.GONE);
 			mLoanNumberTextView.setVisibility(View.GONE);
 		}
+
+        mCalculationViewHelper = CalculationViewHelper.newInstance(this.getActivity(), mCalculationViewpager);
+        mCalculationViewHelper.submit();
 	}
 
 	private void initializeListeners() {
@@ -112,31 +120,31 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 		if ( locale.getLanguage().contains("ko") ) {
 			
 			mLoansEditText.addTextChangedListener(new TextWatcher() {
-				
+
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before,
-						int count) {
-					
+										  int count) {
+
 				}
-				
+
 				@Override
 				public void beforeTextChanged(CharSequence s, int start, int count,
-						int after) {
-					
+											  int after) {
+
 				}
-				
+
 				@Override
 				public void afterTextChanged(Editable s) {
 					String text = s.toString();
-					
-					if ( text == null || text.equals("") ) {
+
+					if (text == null || text.equals("")) {
 						mLoanTextView.setText("");
 						mLoanNumberTextView.setText("");
 						return;
 					}
-					
+
 					mLoanTextView.setText(Util.convertNumberToKorean(text) + " 원");
-					mLoanNumberTextView.setText( Util.toNumFormat(text) + "원" );
+					mLoanNumberTextView.setText(Util.toNumFormat(text) + "원");
 				}
 			});
 		}
@@ -190,4 +198,5 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 		}
 		return false;
 	}
+
 }
