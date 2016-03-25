@@ -31,11 +31,5 @@
 			name="android:windowBackground"
 		>@android:color/transparent</item>
 	</style>
-	
-	<style name="notice" parent="@android:style/Theme.Holo.Light.Dialog">
-			<item
-			name="android:windowBackground"
-		>@android:color/transparent</item>
-	</style>
-	
+
 </resources>

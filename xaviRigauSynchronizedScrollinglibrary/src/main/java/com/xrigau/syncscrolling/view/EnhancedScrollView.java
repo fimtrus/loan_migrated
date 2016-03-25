@@ -113,8 +113,8 @@ public class EnhancedScrollView extends ScrollView {
 	 * @author Xavi Rigau
 	 * 
 	 */
-	static interface OnScrollChangedListener {
+	interface OnScrollChangedListener {
 
-		public void onVerticalScrollChanged(int offsetY);
+		void onVerticalScrollChanged(int offsetY);
 	}
 }

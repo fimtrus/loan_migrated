@@ -1,42 +1,43 @@
 <resources>
 
     <!--
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+        Base application theme for API 14+. This theme completely replaces
+        AppBaseTheme from BOTH res/values/styles.xml and
+        res/values-v11/styles.xml on API 14+ devices.
     -->
     <!--<style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">-->
 
         <!--<item name="colorPrimaryDark">#004D40</item>-->
         <!--<item name="colorPrimary">#00796B</item>-->
+        <!--&lt;!&ndash;<item name="android:navigationBarColor">#004D40</item>&ndash;&gt;-->
 
         <!--<item name="colorAccent">#4DB6AC</item>-->
 
         <!--<item name="colorControlHighlight">#80CBC4</item>-->
         <!--<item name="colorControlNormal">#00897B</item>-->
-
         <!--&lt;!&ndash;<item name="android:actionBarStyle">@style/MyActionBar</item>&ndash;&gt;-->
         <!--&lt;!&ndash; API 14 theme customizations can go here. &ndash;&gt;-->
     <!--</style>-->
-
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimaryDark">#004D40</item>
         <item name="colorPrimary">#00796B</item>
+        <!--<item name="android:navigationBarColor">#004D40</item>-->
 
         <item name="colorAccent">#4DB6AC</item>
 
         <item name="colorControlHighlight">#80CBC4</item>
         <item name="colorControlNormal">#00897B</item>
 
-
         <item name="windowActionBar">true</item>
-        <item name="android:windowActionBarOverlay">true</item>
-        <!--<item name="windowActionModeOverlay">true</item>-->
+        <item name="windowActionBarOverlay">true</item>
+        <item name="android:navigationBarColor">#00796B</item>
+        <!--<item name="android:navigationBarColor">#004D40</item>-->
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
-
-    <style name="disableTextColor">
-        <item name="android:textColor">@drawable/disabled_text_color</item>
-    </style>
+    <!--<style name="MyActionBar" parent="android:style/Widget.Holo.ActionBar.Solid">-->
+        <!--<item name="android:background">@android:color/holo_blue_light</item>-->
+        <!--<item name="android:titleTextStyle">@style/TitleColor</item>-->
+    <!--</style>-->
 
 </resources>

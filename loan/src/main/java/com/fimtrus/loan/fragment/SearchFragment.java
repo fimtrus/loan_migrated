@@ -4,29 +4,26 @@ import java.util.Locale;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.text.Editable;
 import android.text.Html;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
-import android.widget.Toast;
 
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.util.CalculationViewHelper;
-import com.fimtrus.loan.util.Util;
-import com.fimtrus.loan.model.Constant;
+import com.fimtrus.loan.view.WrapViewPager;
+
+import me.relex.circleindicator.CircleIndicator;
 
 /**
  * SearchFragment.java
@@ -41,19 +38,18 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 
 	private View mRootLayout;
 	private FragmentManager mFragmentManager;
-	private Spinner mRepaymentSpinner;
-	private EditText mLoansEditText;
-	private EditText mInterestRateEditText;
-	private EditText mTermEditText;
+//	private Spinner mRepaymentSpinner;
+//	private EditText mLoansEditText;
+//	private EditText mInterestRateEditText;
+//	private EditText mTermEditText;
 	private Button mCalculationButton;
 	private TextView mHintTextView;
-	private TextView mLoanTextView;
-	private TextView mLoanNumberTextView;
+//	private TextView mLoanTextView;
+//	private TextView mLoanNumberTextView;
 
-	private ViewPager mCalculationViewpager;
+	private WrapViewPager mCalculationViewpager;
     private CalculationViewHelper mCalculationViewHelper;
-
-
+	private CircleIndicator mCircleIndicator;
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -66,6 +62,12 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 		return mRootLayout;
 	}
 
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+		getActivity().getMenuInflater().inflate(R.menu.calculation, menu);
+	}
+
 	private void initialize() {
 
 		initializeFields();
@@ -76,106 +78,111 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 	private void initializeFields() {
 
 		mFragmentManager = getFragmentManager();
-		mRepaymentSpinner = (Spinner) mRootLayout
-				.findViewById(R.id.spinner_repayment);
-		mLoansEditText = (EditText) mRootLayout
-				.findViewById(R.id.edittext_loans);
-		mInterestRateEditText = (EditText) mRootLayout
-				.findViewById(R.id.edittext_interest_rate);
-		mTermEditText = (EditText) mRootLayout.findViewById(R.id.edittext_term);
+//		mRepaymentSpinner = (Spinner) mRootLayout
+//				.findViewById(R.id.spinner_repayment);
+//		mLoansEditText = (EditText) mRootLayout
+//				.findViewById(R.id.edittext_loans);
+//		mInterestRateEditText = (EditText) mRootLayout
+//				.findViewById(R.id.edittext_interest_rate);
+//		mTermEditText = (EditText) mRootLayout.findViewById(R.id.edittext_term);
 		mCalculationButton = (Button) mRootLayout
 				.findViewById(R.id.calculation);
 		mHintTextView = (TextView) mRootLayout.findViewById(R.id.textview_hint);
-		
-		mLoanTextView = (TextView) mRootLayout
-				.findViewById(R.id.textview_loans_text);
-		mLoanNumberTextView = (TextView) mRootLayout
-				.findViewById(R.id.textview_loans_number);
+//
+//		mLoanTextView = (TextView) mRootLayout
+//				.findViewById(R.id.textview_loans_text);
+//		mLoanNumberTextView = (TextView) mRootLayout
+//				.findViewById(R.id.textview_loans_number);
 
-		mCalculationViewpager = (ViewPager) mRootLayout.findViewById(R.id.viewpager_calculation);
+		mCalculationViewpager = (WrapViewPager) mRootLayout.findViewById(R.id.viewpager_calculation);
+		mCircleIndicator = (CircleIndicator) mRootLayout.findViewById(R.id.indicator);
 
 	}
 
 	private void initializeView() {
 		mHintTextView.setText(Html.fromHtml(getResources().getString(
 				R.string.hint_text)));
-		
-		Locale locale = Locale.getDefault();
-		
-		if ( !locale.getLanguage().contains("ko") ) {
-			mLoanTextView.setVisibility(View.GONE);
-			mLoanNumberTextView.setVisibility(View.GONE);
-		}
 
-        mCalculationViewHelper = CalculationViewHelper.newInstance(this.getActivity(), mCalculationViewpager);
+		Locale locale = Locale.getDefault();
+
+//		if ( !locale.getLanguage().contains("ko") ) {
+//			mLoanTextView.setVisibility(View.GONE);
+//			mLoanNumberTextView.setVisibility(View.GONE);
+//		}
+
+
+        mCalculationViewHelper = CalculationViewHelper.newInstance(this.getActivity(), mCalculationViewpager , mCircleIndicator);
         mCalculationViewHelper.submit();
+
+		//메뉴아이템 활성화
+		setHasOptionsMenu(true);
 	}
 
 	private void initializeListeners() {
-		mCalculationButton.setOnClickListener(this);
+//		mCalculationButton.setOnClickListener(this);
 
 		
 		Locale locale = Locale.getDefault();
 		
-		if ( locale.getLanguage().contains("ko") ) {
-			
-			mLoansEditText.addTextChangedListener(new TextWatcher() {
-
-				@Override
-				public void onTextChanged(CharSequence s, int start, int before,
-										  int count) {
-
-				}
-
-				@Override
-				public void beforeTextChanged(CharSequence s, int start, int count,
-											  int after) {
-
-				}
-
-				@Override
-				public void afterTextChanged(Editable s) {
-					String text = s.toString();
-
-					if (text == null || text.equals("")) {
-						mLoanTextView.setText("");
-						mLoanNumberTextView.setText("");
-						return;
-					}
-
-					mLoanTextView.setText(Util.convertNumberToKorean(text) + " 원");
-					mLoanNumberTextView.setText(Util.toNumFormat(text) + "원");
-				}
-			});
-		}
-
-		mTermEditText.setOnEditorActionListener(this);
+//		if ( locale.getLanguage().contains("ko") ) {
+//
+//			mLoansEditText.addTextChangedListener(new TextWatcher() {
+//
+//				@Override
+//				public void onTextChanged(CharSequence s, int start, int before,
+//										  int count) {
+//
+//				}
+//
+//				@Override
+//				public void beforeTextChanged(CharSequence s, int start, int count,
+//											  int after) {
+//
+//				}
+//
+//				@Override
+//				public void afterTextChanged(Editable s) {
+//					String text = s.toString();
+//
+//					if (text == null || text.equals("")) {
+//						mLoanTextView.setText("");
+//						mLoanNumberTextView.setText("");
+//						return;
+//					}
+//
+//					mLoanTextView.setText(Util.convertNumberToKorean(text) + " 원");
+//					mLoanNumberTextView.setText(Util.toNumFormat(text) + "원");
+//				}
+//			});
+//		}
+//
+//		mTermEditText.setOnEditorActionListener(this);
 	}
 
 	private void startResultFragment() {
-		int selectRepayment = mRepaymentSpinner.getSelectedItemPosition();
-		String loansText = mLoansEditText.getText().toString();
-		String interestRateText = mInterestRateEditText.getText().toString();
-		String termText = mTermEditText.getText().toString();
+//		int selectRepayment = mRepaymentSpinner.getSelectedItemPosition();
+//		String loansText = mLoansEditText.getText().toString();
+//		String interestRateText = mInterestRateEditText.getText().toString();
+//		String termText = mTermEditText.getText().toString();
 
-		if ( loansText == null || interestRateText == null || termText == null ||
-				loansText.equals("") || interestRateText.equals("") || termText.equals("") ) {
-			Toast.makeText(getActivity(), R.string.input_fields, Toast.LENGTH_SHORT).show();
-			return;
-		}
-		
-		
-		Intent intent = getActivity().getIntent();
+//		if ( loansText == null || interestRateText == null || termText == null ||
+//				loansText.equals("") || interestRateText.equals("") || termText.equals("") ) {
+//			Toast.makeText(getActivity(), R.string.input_fields, Toast.LENGTH_SHORT).show();
+//			return;
+//		}
+//
+//
+//		Intent intent = getActivity().getIntent();
+//
+//		intent.putExtra(Constant.EXTRA_SELECTED_INDEX, selectRepayment);
+//		intent.putExtra(Constant.EXTRA_LOANS, loansText);
+//		intent.putExtra(Constant.EXTRA_INTEREST_RATE, interestRateText);
+//		intent.putExtra(Constant.EXTRA_TERM, termText);
 
-		intent.putExtra(Constant.EXTRA_SELECTED_INDEX, selectRepayment);
-		intent.putExtra(Constant.EXTRA_LOANS, loansText);
-		intent.putExtra(Constant.EXTRA_INTEREST_RATE, interestRateText);
-		intent.putExtra(Constant.EXTRA_TERM, termText);
-
-		mFragmentManager.beginTransaction().addToBackStack("result")
-				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-				.replace(R.id.content_frame, new ResultFragment(), "result")
-				.commit();
+//		mFragmentManager.beginTransaction().addToBackStack("result")
+//				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+//				.replace(R.id.content_frame, new ResultFragment(), "result")
+//				.commit();
 	}
 
 	@Override
@@ -194,9 +201,27 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 		if (v.getId() == R.id.edittext_term
 				&& actionId == EditorInfo.IME_ACTION_DONE) { // 뷰의 id를 식별, 키보드의
 																// 완료 키 입력 검출
-			mCalculationButton.performClick();
+//			mCalculationButton.performClick();
 		}
 		return false;
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		int id = item.getItemId();
+
+		switch ( id ) {
+			case R.id.action_add :
+				mCalculationViewHelper.add();
+				break;
+			case R.id.action_remove :
+				mCalculationViewHelper.remove();
+				break;
+		}
+
+		return super.onOptionsItemSelected(item);
+	}
+
 
 }

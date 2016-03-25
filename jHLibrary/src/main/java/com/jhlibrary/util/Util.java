@@ -365,10 +365,7 @@ public class Util {
 	
 	public static boolean isICS() {
 		int SDK_INT = android.os.Build.VERSION.SDK_INT;
-		if (SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-			return true;
-		}
-		return false;
+		return SDK_INT > Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 	}
 	
 	public static boolean isLite(Context context) {
@@ -377,11 +374,7 @@ public class Util {
 		if (!context.getPackageName().toLowerCase().contains("lite")) {
 			return false;
 		} else {
-			if (obj == null || ((Boolean)obj) == false) {
-				return true;
-			} else {
-				return false;
-			}
+			return obj == null || ((Boolean) obj) == false;
 		}
 	}
 	
@@ -437,12 +430,8 @@ public class Util {
 	public static boolean isOnline(Context context) {
 		ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo ni = cm.getActiveNetworkInfo();
-		
-		if (ni != null) {
-			return true;
-		} else {
-			return false;
-		}
+
+		return ni != null;
 	}
 	
 	public static boolean isRooted ( ) {
@@ -720,13 +709,8 @@ public class Util {
 	}
     
     public static boolean isTablet(Context context) {
-    	if ( (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE
-//    			|| (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE 
-    			) {
-    		return true;
-    	}
-    	return false;
-    }
+		return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+	}
     
 	/**
 	 * 앱 캐시를 가차없이 지운다.
@@ -753,5 +737,5 @@ public class Util {
 					children[i].delete();
 		} catch (Exception e) {
 		}
-	};
+	}
 }

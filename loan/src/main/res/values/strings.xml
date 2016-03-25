@@ -34,5 +34,6 @@
 		<div>*<<font color="blue"><strong> equal total payments</strong></<font> : equal total payments per time period.</div>
 		]]>
 	</string>
-    
+    <string name="button_add">Add</string>
+    <string name="button_remove">Remove</string>
 </resources>

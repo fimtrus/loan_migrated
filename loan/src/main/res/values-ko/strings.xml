@@ -35,5 +35,8 @@
 		<div>*<<font color="blue"><strong> 원금만기일시상환</strong></<font> : 매달 이자만 상환하고, 만기일에 원금을 한꺼번에 상환하는 방식이다.</div>
 		]]>
 	</string>
+
+    <string name="button_add">추가</string>
+    <string name="button_remove">삭제</string>
     
 </resources>

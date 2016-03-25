@@ -195,7 +195,7 @@ public class ByteUtils {
 	 * @return
 	 * @throws NumberFormatException
 	 */
-	public static byte[] toBytes(String digits, int radix) throws IllegalArgumentException, NumberFormatException {
+	public static byte[] toBytes(String digits, int radix) throws IllegalArgumentException {
 		if (digits == null) {
 			return null;
 		}
@@ -231,7 +231,7 @@ public class ByteUtils {
 	 * @throws NumberFormatException
 	 * @see HexUtils.toBytes(String)
 	 */
-	public static byte[] toBytesFromHexString(String digits) throws IllegalArgumentException, NumberFormatException {
+	public static byte[] toBytesFromHexString(String digits) throws IllegalArgumentException {
 		if (digits == null) {
 			return null;
 		}

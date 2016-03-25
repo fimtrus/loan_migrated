@@ -3,10 +3,19 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     >
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:id="@+id/button_remove"
+        android:gravity="right|top"
+        android:layout_gravity="right"
+        android:background="@android:drawable/ic_menu_close_clear_cancel" />
     <LinearLayout
         android:id="@+id/layout_search_fields"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/layout_buttons"
         android:orientation="vertical" >
@@ -32,7 +41,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:entries="@array/repayment_method"
+                android:layout_marginRight="40dp"
                 android:spinnerMode="dialog" />
+
+
         </LinearLayout>
 
         <LinearLayout

@@ -1,0 +1,7 @@
+.gradle/
+.idea/
+.setting/
+.svn/
+build/
+gradle/
+

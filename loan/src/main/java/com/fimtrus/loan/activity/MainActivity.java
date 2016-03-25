@@ -1,11 +1,10 @@
 package com.fimtrus.loan.activity;
 
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -15,7 +14,7 @@ import com.fimtrus.loan.fragment.SearchFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
 
 	private FragmentManager mFragmentManager;
 	private Handler mBackHandler;
@@ -40,7 +39,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void initializeFields() {
-		
+
 		mAdMobView = (AdView) findViewById(R.id.adView);
 
 		mBackHandler = new Handler() {
@@ -85,15 +84,15 @@ public class MainActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		// getMenuInflater().inflate(R.menu.main, menu);
+		// getMenuInflater().inflate(R.menu.calculation, menu);
 		return true;
 	}
 
 	@Override
 	public void onBackPressed() {
-		
+
 		if ( mFragmentManager.getBackStackEntryCount() > 0 ) {
-			
+
 			super.onBackPressed();
 		} else {
 			if (!flag) {
@@ -104,12 +103,11 @@ public class MainActivity extends Activity {
 				super.onBackPressed();
 			}
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void onPause() {
-		// TODO Auto-generated method stub
 		if (mAdMobView != null) {
 			mAdMobView.pause();
 		}
@@ -118,7 +116,6 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		// TODO Auto-generated method stub
 		if (mAdMobView != null) {
 			mAdMobView.resume();
 		}
