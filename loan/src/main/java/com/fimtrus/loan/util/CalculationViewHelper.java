@@ -1,21 +1,30 @@
 package com.fimtrus.loan.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.fimtrus.loan.R;
+import com.fimtrus.loan.activity.ResultActivity;
 import com.fimtrus.loan.adapter.CalculationViewPagerAdapter;
 import com.fimtrus.loan.model.CalculationModel;
+import com.fimtrus.loan.model.Constant;
 import com.fimtrus.loan.view.WrapViewPager;
 
 import java.util.ArrayList;
+
+import javax.xml.transform.Result;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -30,27 +39,30 @@ public class CalculationViewHelper implements View.OnClickListener {
 
     private static CalculationViewHelper mCalculationViewHelper;
 
-
-
     private Context mContext;
     private LayoutInflater mInflater;
     private WrapViewPager mViewPager;
     private CalculationViewPagerAdapter mPagerAdapter;
     private ArrayList<CalculationModel> mModelList;
     private CircleIndicator mCircleIndicator;
+    private Button mCalculationButton;
 
-    public static final CalculationViewHelper newInstance(Context context, WrapViewPager viewPager, CircleIndicator circleIndicator) {
+    private Calculator mCalculator;
 
-        if ( mCalculationViewHelper == null ) {
+    public static final CalculationViewHelper newInstance(Context context, WrapViewPager viewPager, CircleIndicator circleIndicator, Button calculationButton) {
+
+//        if ( mCalculationViewHelper == null ) {
             mCalculationViewHelper = new CalculationViewHelper();
             mCalculationViewHelper.mContext = context;
             mCalculationViewHelper.mInflater = LayoutInflater.from(context);
             mCalculationViewHelper.mModelList = new ArrayList<CalculationModel>();
             mCalculationViewHelper.mViewPager = viewPager;
             mCalculationViewHelper.mCircleIndicator = circleIndicator;
+            mCalculationViewHelper.mCalculationButton = calculationButton;
+            mCalculationViewHelper.mCalculator = Calculator.newInstance( context, mCalculationViewHelper.mModelList );
 
 //            mCalculationViewHelper.mCalculationList = new ArrayList<CalculationModel>();
-        }
+//        }
 
         return mCalculationViewHelper;
     }
@@ -93,7 +105,7 @@ public class CalculationViewHelper implements View.OnClickListener {
 
         if ( mModelList.size() == 0 ) {
 
-            mModelList.add( CalculationModel.newInstance() );
+            mModelList.add(CalculationModel.newInstance());
 //            mModelList.add(newCalculationView());
 //            mModelList.add(newCalculationView());
 //            mModelList.add(newCalculationView());
@@ -104,12 +116,26 @@ public class CalculationViewHelper implements View.OnClickListener {
         if ( mPagerAdapter == null ) {
 
             setPagerOptions();
-            mPagerAdapter = new CalculationViewPagerAdapter(mContext, mModelList);
+            mPagerAdapter = new CalculationViewPagerAdapter(mContext, mViewPager, mModelList, mCalculationButton);
             mViewPager.setAdapter(mPagerAdapter);
             mCircleIndicator.setViewPager(mViewPager);
             mViewPager.setOverScrollMode(ViewPager.OVER_SCROLL_NEVER);
 
         }
+
+        mCalculationButton.setOnClickListener(this);
+
+        Handler handler = new Handler() {
+
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+            }
+        };
+
+        handler.sendEmptyMessageDelayed(0, 500);
 
     }
 
@@ -127,15 +153,21 @@ public class CalculationViewHelper implements View.OnClickListener {
 
         int count = mModelList.size();
 
+
+
         if ( count < 5 ) {
+//            setCalculationData();
             mModelList.add(CalculationModel.newInstance());
 //            mViewPager.setCurrentItem( count );
             if ( mPagerAdapter != null ) {
                 mPagerAdapter.notifyDataSetChanged();
             }
-            mViewPager.setCurrentItem( count, true);
+            setActionDoneKey();
+            mViewPager.setCurrentItem(count, true);
+
+//            displayCalculationData();
         } else {
-            Toast.makeText(mContext, "undefined", Toast.LENGTH_SHORT);
+            Toast.makeText(mContext, R.string.add_max, Toast.LENGTH_SHORT).show();
         }
 
 //        if ( mModelList.size() < 5 ) {
@@ -155,48 +187,30 @@ public class CalculationViewHelper implements View.OnClickListener {
 
     }
 
-    /**
-     * 화면을 삭제한다.
-     * 화면 삭제시 태그 정보를 다시 세팅해 준다.
-     * @param index : 삭제할 화면의 index;
-     */
-    public void remove (int index) {
+    private void setActionDoneKey () {
+        View v = null;
+        CalculationModel c;
 
+        EditText termEditText;
 
+        int count = mModelList.size();
 
-//        View v = null;
-//
-//        if ( mModelList.size() > 1  && mModelList.size() < 6 ) {
-//
-//            v = mModelList.get(index);
-//
-//            remove(v);
-//
-//        } else {
-//            Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
-//        }
+        ArrayList<View> viewList = mPagerAdapter.getViewList();
 
-    }
-    /**
-     * 화면을 삭제한다.
-     * 화면 삭제시 태그 정보를 다시 세팅해 준다.
-     * @param v : 삭제할 화면의 View ;
-     */
-    public void remove (View v) {
+        for ( int i = 0; i < count; i++ ) {
+            v = viewList.get(i);
 
-//        if ( mModelList.size() > 1 ) {
-//
-//            v.setTag(null);
-//
-//            mModelList.remove(v);
-//            mViewPager.clearDisappearingChildren();
-//            if ( mPagerAdapter != null ) {
-//                mPagerAdapter.notifyDataSetChanged();
-//            }
-//        } else {
-//            Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
-//        }
+            termEditText = (EditText) v.findViewById(R.id.edittext_term);
 
+            if ( i < count - 1 ) {
+
+                termEditText.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+
+            } else {
+                termEditText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+            }
+
+        }
     }
 
     public void remove() {
@@ -204,16 +218,36 @@ public class CalculationViewHelper implements View.OnClickListener {
 
 
         if ( count > 1 ) {
+//            setCalculationData();
             mModelList.remove(count - 1);
+
+            View v = mPagerAdapter.getViewList().get(count - 1);
+
+            Spinner repaymentSpinner;
+            EditText loansEditText;
+            EditText interestRateEditText;
+            EditText termEditText;
+
+            repaymentSpinner = (Spinner) v.findViewById(R.id.spinner_repayment);
+            loansEditText = (EditText) v.findViewById(R.id.edittext_loans);
+            interestRateEditText = (EditText) v.findViewById(R.id.edittext_interest_rate);
+            termEditText = (EditText) v.findViewById(R.id.edittext_term);
+
+            repaymentSpinner.setSelection(0);
+            loansEditText.setText("");
+            interestRateEditText.setText("");
+            termEditText.setText("");
+
 
             if ( mPagerAdapter != null ) {
                 mPagerAdapter.notifyDataSetChanged();
             }
-            mViewPager.setCurrentItem( count - 2, true );
+            mViewPager.setCurrentItem(count - 2, true);
 
-            mViewPager.refreshDrawableState();
+            setActionDoneKey();
+//            displayCalculationData();
         } else {
-            Toast.makeText(mContext, "undefined", Toast.LENGTH_SHORT);
+//            Toast.makeText(mContext, "undefined", Toast.LENGTH_SHORT);
         }
     }
 
@@ -249,23 +283,91 @@ public class CalculationViewHelper implements View.OnClickListener {
      *
      */
     public void calculate() {
-        setCalculationData();
-        callResultFragment();
+        boolean isEmpty = setCalculationData();
+
+        if ( isEmpty ) {
+            Toast.makeText(mContext, R.string.input_add_field, Toast.LENGTH_SHORT).show();
+        } else {
+            mCalculator.calculate();
+
+            callResultActivity();
+        }
+
     }
 
     /**
      * 계산 결과 화면 호출.
      */
-    private void callResultFragment() {
-
+    private void callResultActivity() {
+        Intent intent = new Intent(mContext, ResultActivity.class);
+        intent.putExtra(Constant.EXTRA_CALCULATION_MODEL, mModelList);
+        mContext.startActivity(intent);
     }
 
     /**
      * 화면을 통해 입력 받은 값을 모델에 세팅.
      * calculate 함수에서 호출함.
      */
-    private void setCalculationData() {
+    private boolean setCalculationData() {
 
+        boolean isEmpty = false;
+
+        View v = null;
+        CalculationModel c;
+        Spinner repaymentSpinner;
+        EditText loansEditText;
+        EditText interestRateEditText;
+        EditText termEditText;
+
+        int selectedType = 0;
+        String loansText = "";
+        String interestRateText = "";
+        String termText = "";
+
+        String log = "";
+
+        for ( int i = 0; i < mModelList.size(); i++ ) {
+            v = mPagerAdapter.getViewList().get(i);
+            c = mModelList.get(i);
+//            c = mCalculationList.get(i);
+            if ( v != null ) {
+                repaymentSpinner = (Spinner) v.findViewById(R.id.spinner_repayment);
+                loansEditText = (EditText) v.findViewById(R.id.edittext_loans);
+                interestRateEditText = (EditText) v.findViewById(R.id.edittext_interest_rate);
+                termEditText = (EditText) v.findViewById(R.id.edittext_term);
+
+                selectedType = repaymentSpinner.getSelectedItemPosition();
+                loansText = loansEditText.getText().toString();
+                interestRateText = interestRateEditText.getText().toString();
+                termText = termEditText.getText().toString();
+
+                //값이 없을 경우 예외처리.
+                if ( "".equals( loansText )
+                        || "".equals( interestRateText )
+                        || "".equals( termText )) {
+                    isEmpty = true;
+                    break;
+                }
+
+                c.setSelectRepayment(selectedType);
+                c.setLoansText(loansText);
+                c.setInterestRateText(interestRateText);
+                c.setTermText(termText);
+
+                log +=  "index " + i
+                        + " / " + "repayment : " + c.getSelectRepayment()
+                        + " / " + "Loans : " + c.getLoansText()
+                        + " / " + "InterestRate : " + c.getInterestRateText()
+                        + " / " + "Term : " + c.getTermText();
+
+            }
+        }
+        Log.d("LOAN", log);
+
+        return isEmpty;
+    }
+
+    private void displayCalculationData () {
         View v = null;
         CalculationModel c;
         Spinner repaymentSpinner;
@@ -276,32 +378,31 @@ public class CalculationViewHelper implements View.OnClickListener {
         String log = "";
 
         for ( int i = 0; i < mModelList.size(); i++ ) {
-            v = mViewPager.getChildAt(i);
+            v = mPagerAdapter.getViewList().get(i);
             c = mModelList.get(i);
 //            c = mCalculationList.get(i);
+            if ( v != null ) {
+                repaymentSpinner = (Spinner) v.findViewById(R.id.spinner_repayment);
+                loansEditText = (EditText) v.findViewById(R.id.edittext_loans);
+                interestRateEditText = (EditText) v.findViewById(R.id.edittext_interest_rate);
+                termEditText = (EditText) v.findViewById(R.id.edittext_term);
 
-            repaymentSpinner = (Spinner) v.findViewById(R.id.spinner_repayment);
-            loansEditText = (EditText) v.findViewById(R.id.edittext_loans);
-            interestRateEditText = (EditText) v.findViewById(R.id.edittext_interest_rate);
-            termEditText = (EditText) v.findViewById(R.id.edittext_term);
-
-            c.setSelectRepayment(repaymentSpinner.getSelectedItemPosition());
-            c.setLoansText(loansEditText.getText().toString());
-            c.setInterestRateText(interestRateEditText.getText().toString());
-            c.setTermText(termEditText.getText().toString());
-
-            log +=  "index " + i
-                    + " / " + "repayment : " + c.getSelectRepayment()
-                    + " / " + "Loans : " + c.getLoansText()
-                    + " / " + "InterestRate : " + c.getInterestRateText()
-                    + " / " + "Term : " + c.getTermText();
+                repaymentSpinner.setSelection(c.getSelectRepayment());
+                loansEditText.setText(c.getLoansText());
+                interestRateEditText.setText(c.getInterestRateText());
+                termEditText.setText(c.getTermText());
+            }
         }
-        Log.d("LOAN", log);
     }
 
     @Override
     public void onClick(View v) {
-//        View parentView = (View) v.getParent();
-        remove();
+        int id = v.getId();
+        switch( id ) {
+            case R.id.calculation :
+                calculate();
+                break;
+        }
+
     }
 }

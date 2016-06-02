@@ -2,14 +2,24 @@ package com.fimtrus.loan.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.model.CalculationModel;
+import com.fimtrus.loan.util.Util;
+import com.fimtrus.loan.view.WrapViewPager;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by fimtrus on 16. 3. 16..
@@ -21,13 +31,27 @@ public class CalculationViewPagerAdapter extends PagerAdapter {
 
     private Context mContext = null;
     private ArrayList<CalculationModel> mModelList = null;
-//    private int mCount = 3;
-    public CalculationViewPagerAdapter(Context context, ArrayList<CalculationModel> list) {
+    private Button mCalculationButton;
+    private WrapViewPager mViewPager;
+//    private int mCount = 5;
+
+    private ArrayList<View> mViewList;
+    public CalculationViewPagerAdapter(Context context, WrapViewPager viewPager, ArrayList<CalculationModel> list, Button calculationButton) {
 
         super();
         this.mContext = context;
         this.mModelList = list;
         this.mInflator = LayoutInflater.from(mContext);
+        this.mCalculationButton = calculationButton;
+        this.mViewPager = viewPager;
+        this.mViewList = new ArrayList<View>();
+
+        this.mViewList.add(mInflator.inflate(CALCULATION_VIEW, null));
+        this.mViewList.add(mInflator.inflate(CALCULATION_VIEW, null));
+        this.mViewList.add(mInflator.inflate(CALCULATION_VIEW, null));
+        this.mViewList.add(mInflator.inflate(CALCULATION_VIEW, null));
+        this.mViewList.add(mInflator.inflate(CALCULATION_VIEW, null));
+
     }
 
     @Override
@@ -45,8 +69,84 @@ public class CalculationViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
 
-        View view = mInflator.inflate(CALCULATION_VIEW, null);
-        container.addView(view);
+
+
+        View view = this.mViewList.get(position);
+
+        final EditText termEditText = (EditText) view.findViewById(R.id.edittext_term);
+        final TextView loanTextView = (TextView) view.findViewById(R.id.textview_loans_text);
+        final TextView loanNumberTextView = (TextView) view.findViewById(R.id.textview_loans_number);
+        final EditText loansEditText = (EditText) view.findViewById(R.id.edittext_loans);
+
+        Locale locale = Locale.getDefault();
+
+        if ( locale.getLanguage().contains("ko") ) {
+
+            loansEditText.addTextChangedListener(new TextWatcher() {
+
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before,
+										  int count) {
+
+				}
+
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count,
+											  int after) {
+
+				}
+
+				@Override
+				public void afterTextChanged(Editable s) {
+					String text = s.toString();
+
+					if (text == null || text.equals("")) {
+						loanTextView.setText("");
+						loanNumberTextView.setText("");
+						return;
+					}
+
+					loanTextView.setText(Util.convertNumberToKorean(text) + " 원");
+					loanNumberTextView.setText(Util.toNumFormat(text) + "원");
+				}
+			});
+		} else {
+            loanTextView.setVisibility(View.GONE);
+            loanNumberTextView.setVisibility(View.GONE);
+        }
+
+        termEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (v.getId() == R.id.edittext_term ) { // 뷰의 id를 식별, 키보드의
+                    // 완료 키 입력 검출
+
+                    if ( actionId == EditorInfo.IME_ACTION_DONE ) {
+                        mCalculationButton.performClick();
+                    } else if ( actionId == EditorInfo.IME_ACTION_NEXT ) {
+                        int currentIndex = mViewPager.getCurrentItem();
+                        int maxIndex = mViewPager.getChildCount() - 1;
+                        int nextIndex = currentIndex + 1;
+
+                        if ( nextIndex <= maxIndex ) {
+                            mViewPager.setCurrentItem( nextIndex, true ) ;
+//                            v.setNextFocusDownId();
+                        }
+
+                    }
+                }
+                return false;
+            }
+        });
+
+        int index = container.indexOfChild(view);
+
+        if ( index > -1 ) {
+
+        } else {
+            container.addView(view);
+        }
+
 
 //        super.instantiateItem(container, position);
 
@@ -56,28 +156,9 @@ public class CalculationViewPagerAdapter extends PagerAdapter {
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
 
-        //true 일 경우 리스트에 화면이 없는 것이기 때문에... 삭제
-//        boolean doRemove = false;
-
         View view = (View) object;
 
-//        container.removeAllViews();
-//        for ( View c : mModelList) {
-//            container.addView(c);
-//        }
-
-
-//        if ( mModelList != null ) {
-//
-//            //담겨 있으면 삭제할 리스트가 아니기 때문에..
-//            doRemove = !mModelList.contains(view);
-//
-//            if ( doRemove ) {
         container.removeView(view);
-//                mModelList.remove(view);
-//            }
-//        }
-//        super.destroyItem(container, position, object);
     }
 
     @Override
@@ -108,10 +189,7 @@ public class CalculationViewPagerAdapter extends PagerAdapter {
         return " " + position + " ";
     }
 
-//    public void setViewCount ( int count ) {
-//        this.mCount = count;
-//    }
-//    public int getViewCount() {
-//        return this.mCount;
-//    }
+    public ArrayList<View> getViewList() {
+        return mViewList;
+    }
 }

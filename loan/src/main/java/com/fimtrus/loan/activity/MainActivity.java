@@ -1,6 +1,7 @@
 package com.fimtrus.loan.activity;
 
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -28,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		initialize();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mSearchFragment = null;
 	}
 
 	private void initialize() {
@@ -64,17 +71,17 @@ public class MainActivity extends AppCompatActivity {
 		mFragmentManager = getFragmentManager();
 
 		mSearchFragment = new SearchFragment();
-		mResultFragment = new ResultFragment();
+//		mResultFragment = new ResultFragment();
 //		mSplashFragment = new SplashFragment();
 //
 //		mFragmentManager.beginTransaction()
 //				.add(R.id.content_frame, mResultFragment, "result")
 //				.commit();
-		mFragmentManager.beginTransaction()
+		mFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 		.add(R.id.content_frame, mSearchFragment, "search")
 		.commit();
-		// mFragmentManager.beginTransaction().add(R.id.fragment_splash,
-		// mSplashFragment, "splash").commit();
+//		 mFragmentManager.beginTransaction().add(R.id.fragment_splash,
+//		 mSplashFragment, "splash").commit();
 	}
 
 	private void initializeListeners() {

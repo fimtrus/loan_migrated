@@ -5,7 +5,6 @@ import java.util.Locale;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -53,6 +52,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+
+		setRetainInstance(true);
 
 		mRootLayout = inflater.inflate(R.layout.fragment_loan_search,
 				container, false);
@@ -111,7 +112,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 //		}
 
 
-        mCalculationViewHelper = CalculationViewHelper.newInstance(this.getActivity(), mCalculationViewpager , mCircleIndicator);
+        mCalculationViewHelper = CalculationViewHelper.newInstance(this.getActivity(), mCalculationViewpager , mCircleIndicator, mCalculationButton);
         mCalculationViewHelper.submit();
 
 		//메뉴아이템 활성화
@@ -159,30 +160,10 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 //		mTermEditText.setOnEditorActionListener(this);
 	}
 
-	private void startResultFragment() {
-//		int selectRepayment = mRepaymentSpinner.getSelectedItemPosition();
-//		String loansText = mLoansEditText.getText().toString();
-//		String interestRateText = mInterestRateEditText.getText().toString();
-//		String termText = mTermEditText.getText().toString();
+	private void startResultActivity() {
 
-//		if ( loansText == null || interestRateText == null || termText == null ||
-//				loansText.equals("") || interestRateText.equals("") || termText.equals("") ) {
-//			Toast.makeText(getActivity(), R.string.input_fields, Toast.LENGTH_SHORT).show();
-//			return;
-//		}
-//
-//
-//		Intent intent = getActivity().getIntent();
-//
-//		intent.putExtra(Constant.EXTRA_SELECTED_INDEX, selectRepayment);
-//		intent.putExtra(Constant.EXTRA_LOANS, loansText);
-//		intent.putExtra(Constant.EXTRA_INTEREST_RATE, interestRateText);
-//		intent.putExtra(Constant.EXTRA_TERM, termText);
 
-//		mFragmentManager.beginTransaction().addToBackStack("result")
-//				.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-//				.replace(R.id.content_frame, new ResultFragment(), "result")
-//				.commit();
+
 	}
 
 	@Override
@@ -191,7 +172,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 		switch (v.getId()) {
 		case R.id.calculation:
 			
-			startResultFragment();
+			startResultActivity();
 			break;
 		}
 	}
