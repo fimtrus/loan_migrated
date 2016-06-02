@@ -5,15 +5,22 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.ResultActivity">
 
-    <FrameLayout
-        android:id="@+id/content_frame"
+    <com.fimtrus.loan.view.SlidingTabLayout
+        android:id="@+id/sliding_tab"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_height="wrap_content">
 
-    </FrameLayout>
+    </com.fimtrus.loan.view.SlidingTabLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_result"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        >
+    </android.support.v4.view.ViewPager>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

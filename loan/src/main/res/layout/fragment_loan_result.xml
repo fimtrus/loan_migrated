@@ -5,6 +5,7 @@
     android:layout_height="fill_parent" >
 
     <com.xrigau.syncscrolling.view.EnhancedScrollView
+        android:id="@+id/layout_scrollview"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/retry"
@@ -20,6 +21,8 @@
                 android:id="@+id/layout_search_fields"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:orientation="vertical" >
 
                 <LinearLayout
@@ -45,7 +48,6 @@
                         android:ems="10"
                         android:enabled="false"
                         android:gravity="center_horizontal"
-                        android:imeOptions="actionNext"
                         android:inputType="number"
                         android:singleLine="true"
                         android:text="" >
@@ -83,7 +85,6 @@
                         android:ems="10"
                         android:enabled="false"
                         android:gravity="center_horizontal"
-                        android:imeOptions="actionNext"
                         android:inputType="number"
                         android:singleLine="true" >
                     </EditText>
@@ -120,7 +121,6 @@
                         android:ems="10"
                         android:enabled="false"
                         android:gravity="center_horizontal"
-                        android:imeOptions="actionNext"
                         android:inputType="number"
                         android:singleLine="true" >
                     </EditText>
@@ -157,8 +157,6 @@
                         android:ems="10"
                         android:enabled="false"
                         android:gravity="center_horizontal"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
                         android:singleLine="true" >
                     </EditText>
 
@@ -184,9 +182,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/synchronized_view" >
 
-                <LinearLayout
+                <RelativeLayout
+                    android:id="@+id/horizontalScrollView2"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal" >
 
                     <LinearLayout
@@ -197,7 +196,7 @@
                         android:orientation="vertical"
                         android:paddingBottom="1dip" >
                     </LinearLayout>
-                </LinearLayout>
+                </RelativeLayout>
             </HorizontalScrollView>
 
             <LinearLayout
@@ -205,7 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/base_view"
-                android:background="@android:color/holo_blue_light"
+                android:background="@color/normalgreen"
                 android:orientation="horizontal" >
 
                 <LinearLayout
@@ -232,8 +231,6 @@
                         android:ems="10"
                         android:enabled="false"
                         android:gravity="center_horizontal"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
                         android:singleLine="true"
                         android:textColor="@color/white" >
                     </EditText>
@@ -257,7 +254,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@android:color/holo_blue_light"
+        android:background="@color/normalgreen"
         android:text="@string/retry"
         android:textColor="@android:color/white" />
 

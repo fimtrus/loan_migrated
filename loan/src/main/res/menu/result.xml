@@ -3,15 +3,10 @@
     >
 
     <item
-        android:id="@+id/action_remove"
+        android:id="@+id/action_save"
         android:orderInCategory="100"
         loan:showAsAction="always"
-        android:icon="@drawable/ic_remove_white_36dp"/>
-    <item
-        android:id="@+id/action_add"
-        android:orderInCategory="100"
-        loan:showAsAction="always"
-        android:icon="@drawable/ic_add_white_36dp"/>
+        android:icon="@drawable/ic_save_white_36dp"/>
 
     <!--<item-->
         <!--android:id="@+id/action_remove"-->

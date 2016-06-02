@@ -34,6 +34,10 @@
 		<div>*<<font color="blue"><strong> equal total payments</strong></<font> : equal total payments per time period.</div>
 		]]>
 	</string>
+
+    <string name="add_max">You can\'t add to more 5.</string>
+    <string name="input_add_field">Please, input all fields.</string>
     <string name="button_add">Add</string>
     <string name="button_remove">Remove</string>
+    <string name="toast_saved">It was saved to </string>
 </resources>

@@ -18,6 +18,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -628,15 +629,21 @@ public class Util {
 	 */
     public static Bitmap snapScreen( View view ) {
     	view.setDrawingCacheEnabled(true);
+		view.buildDrawingCache(true);
     	view.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
     	
-    	Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
-    	
+    	Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+
+		view.draw(canvas);
+
     	view.setDrawingCacheEnabled(false);
     	
     	return bitmap;
     	
     }
+
+
     
     public static Bitmap resizeBitmap ( Context context, Uri uri, int resizeWidth, int resizeHeight ) {
     	

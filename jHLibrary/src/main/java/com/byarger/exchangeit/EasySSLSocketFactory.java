@@ -72,7 +72,7 @@ public class EasySSLSocketFactory implements LayeredSocketFactory {
          */
         public Socket connectSocket(Socket sock, String host, int port,
                         InetAddress localAddress, int localPort, HttpParams params)
-                        throws IOException, ConnectTimeoutException {
+                        throws IOException {
                 int connTimeout = HttpConnectionParams.getConnectionTimeout(params);
                 int soTimeout = HttpConnectionParams.getSoTimeout(params);
 
