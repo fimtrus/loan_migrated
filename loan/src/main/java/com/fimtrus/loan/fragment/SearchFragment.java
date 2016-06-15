@@ -18,8 +18,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.fimtrus.loan.AnalyticsTrackers;
+import com.fimtrus.loan.CommonApplication;
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.util.CalculationViewHelper;
+import com.fimtrus.loan.util.Calculator;
 import com.fimtrus.loan.view.WrapViewPager;
 
 import me.relex.circleindicator.CircleIndicator;
@@ -171,7 +174,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 
 		switch (v.getId()) {
 		case R.id.calculation:
-			
+			CommonApplication.getInstance().trackEvent(
+					AnalyticsTrackers.TRACKER_CATEGORY_BUTTON,
+					AnalyticsTrackers.TRACKER_ACTION_CALCULATION,
+					"count:" + Calculator.getInstance().getModelList().size()
+			);
 			startResultActivity();
 			break;
 		}

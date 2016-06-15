@@ -133,7 +133,7 @@ public class ImageHelper {
 		}
 	}
 	
-	public static interface onDownloadCompleteListener {
+	public interface onDownloadCompleteListener {
 		void onComplete( Bitmap bitmap );
-	};
+	}
 }

@@ -9,13 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.widget.Toast;
 
+import com.fimtrus.loan.CommonApplication;
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.fragment.ResultFragment;
 import com.fimtrus.loan.fragment.SearchFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
+
+	private static final String TAG = MainActivity.class.getSimpleName();
 
 	private FragmentManager mFragmentManager;
 	private Handler mBackHandler;
@@ -63,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 		// mSplashHandler.sendEmptyMessageDelayed(0, 2000);
 		AdRequest adRequest = new AdRequest.Builder().build();
 		mAdMobView.loadAd(adRequest);
+		CommonApplication.getInstance().trackScreenView(TAG);
 	}
 
 	private void initializeFragments() {

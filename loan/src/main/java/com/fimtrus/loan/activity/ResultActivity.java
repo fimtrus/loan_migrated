@@ -13,6 +13,7 @@ import android.view.ScaleGestureDetector;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.fimtrus.loan.CommonApplication;
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.adapter.ResultViewPagerAdapter;
 import com.fimtrus.loan.fragment.ResultFragment;
@@ -26,6 +27,8 @@ import com.jhlibrary.util.CommonDialogs;
 import java.util.ArrayList;
 
 public class ResultActivity extends AppCompatActivity {
+
+	private static final String TAG = ResultActivity.class.getSimpleName();
 
 	private AdView mAdMobView;
 	private ArrayList<CalculationModel> mModelList;
@@ -99,6 +102,8 @@ public class ResultActivity extends AppCompatActivity {
 		mViewPager.setAdapter(mPagerAdapter);
 		mSlidingTabLayout.setDistributeEvenly(true);
 		mSlidingTabLayout.setViewPager(mViewPager);
+
+		CommonApplication.getInstance().trackScreenView(TAG);
 	}
 
 	private void initializeFragments() {

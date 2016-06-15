@@ -1,12 +1,12 @@
 package com.jhlibrary.constant;
 
 public interface Key {
-	public String PREF_NAME = "com.jhlibrary";
-	public String FILE_NAME = "filename";
+	String PREF_NAME = "com.jhlibrary";
+	String FILE_NAME = "filename";
 	
-	public String OAUTH_VERIFIER = "oauth_verifier";
-	public String OAUTH_URL = "oauth_url";
+	String OAUTH_VERIFIER = "oauth_verifier";
+	String OAUTH_URL = "oauth_url";
 	
-	public String IS_PERCHASED = "is_perchased";
+	String IS_PERCHASED = "is_perchased";
 
 }

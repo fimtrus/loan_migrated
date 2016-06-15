@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.fimtrus.loan.AnalyticsTrackers;
+import com.fimtrus.loan.CommonApplication;
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.activity.ResultActivity;
 import com.fimtrus.loan.adapter.CalculationViewPagerAdapter;
@@ -77,6 +79,12 @@ public class CalculationViewHelper implements View.OnClickListener {
         }
 
         return mCalculationViewHelper;
+    }
+
+    public static final void clearField() {
+
+        mCalculationViewHelper = null;
+
     }
 
 
@@ -287,7 +295,22 @@ public class CalculationViewHelper implements View.OnClickListener {
 
         if ( isEmpty ) {
             Toast.makeText(mContext, R.string.input_add_field, Toast.LENGTH_SHORT).show();
+
+            CommonApplication.getInstance().trackEvent(
+                    AnalyticsTrackers.TRACKER_CATEGORY_BUTTON,
+                    AnalyticsTrackers.TRACKER_ACTION_CALCULATION,
+                    "No Input Field"
+            );
+
         } else {
+
+            CommonApplication.getInstance().trackEvent(
+                    AnalyticsTrackers.TRACKER_CATEGORY_BUTTON,
+                    AnalyticsTrackers.TRACKER_ACTION_CALCULATION,
+                    "count:" + Calculator.getInstance().getModelList().size()
+            );
+
+
             mCalculator.calculate();
 
             callResultActivity();

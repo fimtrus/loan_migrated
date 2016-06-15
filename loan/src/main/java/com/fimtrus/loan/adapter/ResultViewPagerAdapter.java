@@ -89,8 +89,10 @@ public class ResultViewPagerAdapter extends FragmentPagerAdapter {
 
         int modelLength = mModelList.size();
 
+        String total = mContext.getResources().getString(R.string.total);
+
         if ( modelLength == position ) {
-            return "합 계";
+            return total;
         } else {
             return " " + ( position + 1 ) + " ";
         }

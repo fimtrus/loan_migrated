@@ -19,7 +19,7 @@
         <!--&lt;!&ndash; API 14 theme customizations can go here. &ndash;&gt;-->
     <!--</style>-->
     <!-- Application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="LoanTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimaryDark">#004D40</item>
         <item name="colorPrimary">#00796B</item>
         <!--<item name="android:navigationBarColor">#004D40</item>-->

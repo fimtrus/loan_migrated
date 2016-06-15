@@ -36,6 +36,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fimtrus.loan.AnalyticsTrackers;
+import com.fimtrus.loan.CommonApplication;
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.model.CalculationModel;
 import com.fimtrus.loan.util.Calculator;
@@ -220,6 +222,12 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 		
 		mLoans = new BigDecimal(loansText );
 
+		CommonApplication.getInstance().trackEvent(
+				AnalyticsTrackers.TRACKER_CATEGORY_RESULT,
+				AnalyticsTrackers.TRACKER_ACTION_CALCULATION,
+				"type:"+selectRepayment+";loans:"+loansText+";interestRate:"+interestRateText+";term:"+termText
+		);
+
 		showResult();
 	}
 
@@ -237,12 +245,20 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 		mTotalInterestEditText.setText( Util.toNumFormat( totalInterest.toString() ) );
 		mTotalAmountEditText.setText( Util.toNumFormat( mLoans.add( totalInterest ).toString()  ) );
 
-		//헤더.
 		LinearLayout tableRow;
+		//TODO : 날짜 및 금액 찍기
+//		TextView tv;
+//		String screenshotTitleText;
+//		tableRow = (LinearLayout) mInflater.inflate(R.layout.view_screenshow_title, null);
+//		tv = ((TextView) tableRow.findViewById(R.id.textview_screenshot_title) );
+//		mContentLayout.addView(tableRow);
+
+
+
+		//헤더.
 		tableRow = (LinearLayout) mInflater.inflate(R.layout.table_row, null);
 		mContentLayout.addView(tableRow);
-		
-		
+
 		for ( int i = 0; i < mRepaymentResultList.size(); i++ ) {
 			
 			RepaymentResultModel model = mRepaymentResultList.get(i);
@@ -307,13 +323,19 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 			dirPath.mkdir();
 		}
 
-		File file = new File( Constant.DIRECTORY_PATH, "loan_"+ new Date().getTime() + ".jpg");
+		Date date = new Date();
+
+		File file = new File( Constant.DIRECTORY_PATH, "loan_"+ date.getTime() + ".jpg");
 
 		String filePath = file.getAbsolutePath();
 		String message = getResources().getString(R.string.toast_saved);
 		com.jhlibrary.util.Util.saveScreen(getActivity(), mContentLayout, file);
 
-
+		CommonApplication.getInstance().trackEvent(
+				AnalyticsTrackers.TRACKER_CATEGORY_BUTTON,
+				AnalyticsTrackers.TRACKER_ACTION_SAVE,
+				date.getTime() + ""
+		);
 
 		Toast.makeText(getActivity(), message + "\n" + filePath, Toast.LENGTH_SHORT).show();
 	}
