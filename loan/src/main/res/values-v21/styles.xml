@@ -32,6 +32,8 @@
         <item name="windowActionBar">true</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="android:navigationBarColor">#00796B</item>
+        <item name="android:windowActionBarOverlay">true</item>
+
         <!--<item name="android:navigationBarColor">#004D40</item>-->
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>

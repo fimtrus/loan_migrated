@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private void initializeView() {
 		// mSplashHandler.sendEmptyMessageDelayed(0, 2000);
+
 		AdRequest adRequest = new AdRequest.Builder().build();
 		mAdMobView.loadAd(adRequest);
 		CommonApplication.getInstance().trackScreenView(TAG);
