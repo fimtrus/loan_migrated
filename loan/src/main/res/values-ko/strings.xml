@@ -41,5 +41,6 @@
     <string name="button_add">추가</string>
     <string name="button_remove">삭제</string>
     <string name="toast_saved">화면이 아래의 경로에 저장되었습니다.</string>
+    <string name="export">저장중..</string>
     <string name="total">합 계</string>
 </resources>

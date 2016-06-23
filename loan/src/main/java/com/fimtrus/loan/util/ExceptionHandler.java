@@ -17,6 +17,7 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     public void uncaughtException(Thread thread, Throwable ex) {
 
         clear();
+        System.exit(0);
 
     }
 

@@ -40,5 +40,6 @@
     <string name="button_add">Add</string>
     <string name="button_remove">Remove</string>
     <string name="toast_saved">It was saved to </string>
+    <string name="export">export...</string>
     <string name="total">Total</string>
 </resources>
