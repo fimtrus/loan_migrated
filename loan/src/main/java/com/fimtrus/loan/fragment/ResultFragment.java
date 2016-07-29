@@ -9,6 +9,7 @@ import java.util.Date;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
@@ -16,6 +17,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
@@ -38,6 +41,7 @@ import android.widget.Toast;
 
 import com.fimtrus.loan.AnalyticsTrackers;
 import com.fimtrus.loan.CommonApplication;
+import com.fimtrus.loan.Manifest;
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.model.CalculationModel;
 import com.fimtrus.loan.util.Calculator;
@@ -58,6 +62,9 @@ import javax.xml.transform.Result;
  * @date 2014. 7. 15.
  */
 public class ResultFragment extends android.support.v4.app.Fragment {
+
+
+	private final int REQUEST_PERMISSION_STORAGE = 1;
 
 	private View mRootLayout;
 	private FragmentManager mFragmentManager;
@@ -212,8 +219,19 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 		} else {
 			mInterestRateEditText.setText( interestRateText );
 			mTermEditText.setText( termText );
-			mInterestRate = Float.valueOf(interestRateText);
-			mTerm = Double.valueOf(termText);
+
+			if ( "".equals(interestRateText) ){
+				mInterestRate = 0.0f;
+			} else {
+
+				mInterestRate = Float.valueOf(interestRateText);
+			}
+			if ( "".equals(termText) ){
+				mTerm = Double.valueOf(0);
+			} else {
+
+				mTerm = Double.valueOf(termText);
+			}
 		}
 
 		mLoansEditText.setText( Util.toNumFormat(loansText) );
@@ -340,6 +358,35 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 		Toast.makeText(getActivity(), message + "\n" + filePath, Toast.LENGTH_SHORT).show();
 	}
 
+	private boolean checkPermission () {
+
+		if ( ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+				!= PackageManager.PERMISSION_GRANTED
+				|| ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.READ_EXTERNAL_STORAGE)
+			!= PackageManager.PERMISSION_GRANTED
+
+				) {
+			//Denied
+			if ( shouldShowRequestPermissionRationale(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ) {
+				Toast.makeText(getActivity(), R.string.toast_save_denied, Toast.LENGTH_SHORT).show();
+			}
+//			shouldShowRequestPermissionRationale(Manifest.permission.STORAGE);
+			requestPermissions(new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+					android.Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_PERMISSION_STORAGE);
+
+		} else {
+			//granted
+			saveScreen();
+		}
+
+
+//		ContextCompat.checkSelfPermission(getActivity(),)
+
+//		requestPermissions();
+		return true;
+	}
+
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -347,7 +394,8 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 
 		switch ( id ) {
 			case R.id.action_save :
-				saveScreen();
+				checkPermission();
+
 				break;
 
 		}
@@ -360,5 +408,18 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 
 		getActivity().getMenuInflater().inflate(R.menu.result, menu);
 	}
+	@Override
+	public void onRequestPermissionsResult(int requestCode,
+										   String[] permissions, int[] grantResults) {
 
+
+		switch ( requestCode ) {
+			case 1 :
+				//STORAGE
+
+		}
+
+		// TODO Auto-generated method stub
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
 }

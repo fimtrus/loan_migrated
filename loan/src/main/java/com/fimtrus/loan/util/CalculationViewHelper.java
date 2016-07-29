@@ -143,7 +143,7 @@ public class CalculationViewHelper implements View.OnClickListener {
             }
         };
 
-        handler.sendEmptyMessageDelayed(0, 500);
+//        handler.sendEmptyMessageDelayed(0, 500);
 
     }
 
@@ -311,7 +311,7 @@ public class CalculationViewHelper implements View.OnClickListener {
             );
 
 
-            mCalculator.calculate();
+//            mCalculator.calculate();
 
             callResultActivity();
         }
@@ -323,7 +323,7 @@ public class CalculationViewHelper implements View.OnClickListener {
      */
     private void callResultActivity() {
         Intent intent = new Intent(mContext, ResultActivity.class);
-        intent.putExtra(Constant.EXTRA_CALCULATION_MODEL, mModelList);
+//        intent.putParcelableArrayListExtra(Constant.EXTRA_CALCULATION_MODEL, mModelList);
         mContext.startActivity(intent);
     }
 

@@ -7,18 +7,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.fimtrus.loan.CommonApplication;
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.fragment.ResultFragment;
 import com.fimtrus.loan.fragment.SearchFragment;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+import com.fimtrus.loan.util.CalculationViewHelper;
+
 
 import java.util.HashMap;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 	private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 	protected boolean flag;
 	private SearchFragment mSearchFragment;
 	private ResultFragment mResultFragment;
-	private AdView mAdMobView;
+//	private AdView mAdMobView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
 	private void initializeFields() {
 
-		mAdMobView = (AdView) findViewById(R.id.adView);
+		CalculationViewHelper.clearField();
+
+//		mAdMobView = (AdView) findViewById(R.id.adView);
 
 		mBackHandler = new Handler() {
 			@Override
@@ -67,8 +70,8 @@ public class MainActivity extends AppCompatActivity {
 	private void initializeView() {
 		// mSplashHandler.sendEmptyMessageDelayed(0, 2000);
 
-		AdRequest adRequest = new AdRequest.Builder().build();
-		mAdMobView.loadAd(adRequest);
+//		AdRequest adRequest = new AdRequest.Builder().build();
+//		mAdMobView.loadAd(adRequest);
 		CommonApplication.getInstance().trackScreenView(TAG);
 	}
 
@@ -94,11 +97,16 @@ public class MainActivity extends AppCompatActivity {
 	private void initializeListeners() {
 
 	}
-
+//	@Override
+//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//
+//
+//	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		// getMenuInflater().inflate(R.menu.calculation, menu);
+		getMenuInflater().inflate(R.menu.calculation, menu);
 		return true;
 	}
 
@@ -122,17 +130,17 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onPause() {
-		if (mAdMobView != null) {
-			mAdMobView.pause();
-		}
+//		if (mAdMobView != null) {
+//			mAdMobView.pause();
+//		}
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
-		if (mAdMobView != null) {
-			mAdMobView.resume();
-		}
+//		if (mAdMobView != null) {
+//			mAdMobView.resume();
+//		}
 		super.onResume();
 	}
 

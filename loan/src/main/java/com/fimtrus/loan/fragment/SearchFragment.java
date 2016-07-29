@@ -58,19 +58,17 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 
 		setRetainInstance(true);
 
-		mRootLayout = inflater.inflate(R.layout.fragment_loan_search,
-				container, false);
+		if ( mRootLayout == null ) {
+			mRootLayout = inflater.inflate(R.layout.fragment_loan_search,
+					container, false);
+		}
 
 		initialize();
 		
 		return mRootLayout;
 	}
 
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
-		getActivity().getMenuInflater().inflate(R.menu.calculation, menu);
-	}
 
 	private void initialize() {
 

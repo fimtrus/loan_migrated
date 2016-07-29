@@ -6,9 +6,8 @@
     <string name="exit_text">If you click one more back key, Application will be finished</string>
     <string name="input_fields">Please, Input all fields.</string>
     <string name="hello_world">Hello world!</string>
-    
-    
-    
+
+
     <string name="label_loans">Loans</string>
     <string name="label_interest_rate">Interest</string>
     <string name="label_loan_term">Term</string>
@@ -42,4 +41,5 @@
     <string name="toast_saved">It was saved to </string>
     <string name="export">export...</string>
     <string name="total">Total</string>
+    <string name="toast_save_denied">Should grant storage authority for saving.</string>
 </resources>

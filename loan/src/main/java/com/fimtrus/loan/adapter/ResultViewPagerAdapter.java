@@ -77,7 +77,7 @@ public class ResultViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
 
-        if ( mCalculator.getSum() == null ) {
+        if ( mModelList.size() == 1 ) {
             return mModelList.size();
         } else {
             return mModelList.size() + 1;
@@ -97,6 +97,24 @@ public class ResultViewPagerAdapter extends FragmentPagerAdapter {
             return " " + ( position + 1 ) + " ";
         }
 
+
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+
+//        int index;
+//
+//        if ( mModelList != null ) {
+//
+//            index = mModelList.indexOf(object);
+//
+//            return index;
+//        } else {
+
+        return POSITION_NONE;
+//        }
+//        return super.getItemPosition(object);
 
     }
 }

@@ -3,6 +3,7 @@ package com.fimtrus.loan.activity;
 import android.app.Dialog;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -19,6 +20,7 @@ import com.fimtrus.loan.adapter.ResultViewPagerAdapter;
 import com.fimtrus.loan.fragment.ResultFragment;
 import com.fimtrus.loan.model.CalculationModel;
 import com.fimtrus.loan.model.Constant;
+import com.fimtrus.loan.util.Calculator;
 import com.fimtrus.loan.view.SlidingTabLayout;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -26,12 +28,12 @@ import com.jhlibrary.util.CommonDialogs;
 
 import java.util.ArrayList;
 
-public class ResultActivity extends AppCompatActivity {
+public class ResultActivity extends BaseActivity {
 
 	private static final String TAG = ResultActivity.class.getSimpleName();
 
 	private AdView mAdMobView;
-	private ArrayList<CalculationModel> mModelList;
+	private ArrayList<CalculationModel> mModelList = null;
 	private FragmentManager mFragmentManager;
 	private ResultFragment mResultFragment;
 
@@ -65,7 +67,9 @@ public class ResultActivity extends AppCompatActivity {
 	private void initializeFields() {
 
 		mAdMobView = (AdView) findViewById(R.id.adView);
-		mModelList = getIntent().getParcelableArrayListExtra(Constant.EXTRA_CALCULATION_MODEL);
+
+
+		mModelList = Calculator.getInstance().getModelList();
 
 		mViewPager = (ViewPager) findViewById(R.id.viewpager_result);
 
@@ -73,24 +77,31 @@ public class ResultActivity extends AppCompatActivity {
 
 		mPagerAdapter = new ResultViewPagerAdapter(this, getSupportFragmentManager(), mViewPager);
 
+		mViewPager.setAdapter(mPagerAdapter);
+		mSlidingTabLayout.setDistributeEvenly(true);
+		mSlidingTabLayout.setViewPager(mViewPager);
 
-		CalculationModel c;
-		String log = "";
-		for ( int i = 0; i < mModelList.size(); i++ ) {
-			c = mModelList.get(i);
-//            c = mCalculationList.get(i);
-			if ( c != null ) {
+		mDialogs = new CommonDialogs(this);
 
-				log +=  "index " + i
-						+ " / " + "repayment : " + c.getSelectRepayment()
-						+ " / " + "Loans : " + c.getLoansText()
-						+ " / " + "InterestRate : " + c.getInterestRateText()
-						+ " / " + "Term : " + c.getTermText() + "\n";
 
-			}
 
-		}
-		Log.d("LOAN", log);
+//		CalculationModel c;
+//		String log = "";
+//		for ( int i = 0; i < mModelList.size(); i++ ) {
+//			c = mModelList.get(i);
+////            c = mCalculationList.get(i);
+//			if ( c != null ) {
+//
+//				log +=  "index " + i
+//						+ " / " + "repayment : " + c.getSelectRepayment()
+//						+ " / " + "Loans : " + c.getLoansText()
+//						+ " / " + "InterestRate : " + c.getInterestRateText()
+//						+ " / " + "Term : " + c.getTermText() + "\n";
+//
+//			}
+//
+//		}
+//		Log.d("LOAN", log);
 
 	}
 
@@ -99,11 +110,9 @@ public class ResultActivity extends AppCompatActivity {
 		AdRequest adRequest = new AdRequest.Builder().build();
 		mAdMobView.loadAd(adRequest);
 
-		mViewPager.setAdapter(mPagerAdapter);
-		mSlidingTabLayout.setDistributeEvenly(true);
-		mSlidingTabLayout.setViewPager(mViewPager);
-
 		CommonApplication.getInstance().trackScreenView(TAG);
+
+		new ResultTask().execute();
 	}
 
 	private void initializeFragments() {
@@ -141,5 +150,43 @@ public class ResultActivity extends AppCompatActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		// getMenuInflater().inflate(R.menu.calculation, menu);
 		return true;
+	}
+
+	private class ResultTask extends AsyncTask<Void, Void, Void > {
+
+		private Dialog mProgressDialog;
+
+		@Override
+		protected Void doInBackground(Void... params) {
+
+			Calculator.getInstance().calculate();
+
+			return null;
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+
+			mProgressDialog = mDialogs.showDialog(null);
+		}
+
+		@Override
+		protected void onPostExecute(Void aVoid) {
+			super.onPostExecute(aVoid);
+
+			initializeFields();
+
+			mProgressDialog.dismiss();
+		}
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			super.onProgressUpdate(values);
+		}
+	}
+
+	public void onFragmentCreated ( int index, boolean isSucceed ) {
+
 	}
 }
