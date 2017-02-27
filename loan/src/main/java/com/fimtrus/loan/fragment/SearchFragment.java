@@ -11,8 +11,6 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,12 +29,7 @@ import com.fimtrus.loan.R;
 import com.fimtrus.loan.activity.ResultActivity;
 import com.fimtrus.loan.model.CalculationModel;
 import com.fimtrus.loan.model.Constant;
-import com.fimtrus.loan.util.CalculationViewHelper;
-import com.fimtrus.loan.util.Calculator;
 import com.fimtrus.loan.util.Util;
-import com.fimtrus.loan.view.WrapViewPager;
-
-import me.relex.circleindicator.CircleIndicator;
 
 /**
  * SearchFragment.java
@@ -50,7 +43,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 		OnEditorActionListener {
 
 	private View mRootLayout;
-	private FragmentManager mFragmentManager;
 	private Spinner mRepaymentSpinner;
 	private EditText mLoansEditText;
 	private EditText mInterestRateEditText;
@@ -62,9 +54,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 
     private ScrollView mScrollView;
 
-	private WrapViewPager mCalculationViewpager;
-    private CalculationViewHelper mCalculationViewHelper;
-	private CircleIndicator mCircleIndicator;
     @Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -92,7 +81,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 
 	private void initializeFields() {
 
-		mFragmentManager = getFragmentManager();
 		mRepaymentSpinner = (Spinner) mRootLayout
 				.findViewById(R.id.spinner_repayment);
 		mLoansEditText = (EditText) mRootLayout
@@ -123,14 +111,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 			mLoanTextView.setVisibility(View.GONE);
 			mLoanNumberTextView.setVisibility(View.GONE);
 		}
-
-
-//        mCalculationViewHelper = CalculationViewHelper.newInstance(this.getActivity(), mCalculationViewpager , mCircleIndicator, mCalculationButton);
-//        mCalculationViewHelper.submit();
-
-		//메뉴아이템 활성화
-//		setHasOptionsMenu(true);
-	}
+ 	}
 
 	private void initializeListeners() {
 
@@ -290,23 +271,4 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 		}
 		return false;
 	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		int id = item.getItemId();
-
-		switch ( id ) {
-			case R.id.action_add :
-				mCalculationViewHelper.add();
-				break;
-			case R.id.action_remove :
-				mCalculationViewHelper.remove();
-				break;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
-
 }

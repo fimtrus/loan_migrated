@@ -5,16 +5,11 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.widget.Toast;
 
 import com.fimtrus.loan.CommonApplication;
 import com.fimtrus.loan.R;
-import com.fimtrus.loan.fragment.ResultFragment;
 import com.fimtrus.loan.fragment.SearchFragment;
-import com.fimtrus.loan.util.CalculationViewHelper;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -29,7 +24,6 @@ public class MainActivity extends BaseActivity {
 	private Handler mBackHandler;
 	protected boolean flag;
 	private SearchFragment mSearchFragment;
-	private ResultFragment mResultFragment;
 	private AdView mAdMobView;
 
 	@Override
@@ -55,8 +49,6 @@ public class MainActivity extends BaseActivity {
 
 	private void initializeFields() {
 
-		CalculationViewHelper.clearField();
-
 		mAdMobView = (AdView) findViewById(R.id.adView);
 
 		mBackHandler = new Handler() {
@@ -70,7 +62,6 @@ public class MainActivity extends BaseActivity {
 	}
 
 	private void initializeView() {
-		// mSplashHandler.sendEmptyMessageDelayed(0, 2000);
 
 		AdRequest adRequest = new AdRequest.Builder().build();
 		mAdMobView.loadAd(adRequest);
@@ -78,39 +69,18 @@ public class MainActivity extends BaseActivity {
 	}
 
 	private void initializeFragments() {
-		// Utils.setPreference(Key.INTIALIZED_HELP, false);
 
 		mFragmentManager = getFragmentManager();
 
 		mSearchFragment = new SearchFragment();
-//		mResultFragment = new ResultFragment();
-//		mSplashFragment = new SplashFragment();
-//
-//		mFragmentManager.beginTransaction()
-//				.add(R.id.content_frame, mResultFragment, "result")
-//				.commit();
 		mFragmentManager.beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
 		.add(R.id.content_frame, mSearchFragment, "search")
 		.commit();
-//		 mFragmentManager.beginTransaction().add(R.id.fragment_splash,
-//		 mSplashFragment, "splash").commit();
 	}
 
 	private void initializeListeners() {
 
 	}
-//	@Override
-//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//
-//
-//	}
-//	@Override
-//	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		// getMenuInflater().inflate(R.menu.calculation, menu);
-//		getMenuInflater().inflate(R.menu.calculation, menu);
-//		return true;
-//	}
 
 	@Override
 	public void onBackPressed() {

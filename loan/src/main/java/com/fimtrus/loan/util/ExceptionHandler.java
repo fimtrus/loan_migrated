@@ -25,6 +25,5 @@ public class ExceptionHandler implements Thread.UncaughtExceptionHandler {
     }
 
     private void clear() {
-        CalculationViewHelper.clearField();
     }
 }

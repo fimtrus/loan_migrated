@@ -16,78 +16,15 @@ import java.util.ArrayList;
  */
 public class Calculator {
 
-    private ArrayList<ArrayList<RepaymentResultModel>> mRepaymentResultLists;
-
-    private ArrayList<RepaymentResultModel> mRepaymentSumList;
-
-    private ArrayList<CalculationModel> mModelList;
-
-    private CalculationModel mSum;
-
     private Context mContext;
 
     private static Calculator mCalculator;
 
     private Calculator () {
         super();
-        mRepaymentResultLists = new ArrayList<>();
-        mRepaymentSumList = new ArrayList<>();
-        mSum = CalculationModel.newInstance();
     }
 
-    public static Calculator newInstance(Context context, ArrayList<CalculationModel> list) {
-
-        if ( mCalculator == null ) {
-            mCalculator = new Calculator();
-            mCalculator.mContext = context;
-            mCalculator.mModelList = list;
-        }
-
-        return mCalculator;
-    }
-
-    public static Calculator getInstance() {
-
-        if ( mCalculator == null ) {
-            mCalculator = new Calculator();
-        }
-
-        return mCalculator;
-    }
-
-    public void calculate () {
-
-        this.clear();
-
-        for( CalculationModel c : mModelList ) {
-
-            int selectedRepayment = c.getSelectRepayment();
-
-            switch ( selectedRepayment ) {
-                //원금 균등
-                case 0 :
-                    calculateRepaymentLoans( c );
-                    break;
-                //원리금 균등
-                case 1 :
-                    calculateRepaymentLoansAndInterest( c );
-                    break;
-                case 2 :
-                    calculateRepaymentLastRepayment( c );
-                    break;
-            }
-        }
-
-        if ( mModelList.size() > 1 ) {
-            calculateSum();
-        } else {
-            mSum = null;
-            mRepaymentSumList.clear();
-        }
-
-
-    }
-    public ArrayList<RepaymentResultModel> calculate (CalculationModel c) {
+    public static ArrayList<RepaymentResultModel> calculate (CalculationModel c) {
 
         ArrayList<RepaymentResultModel> list = new ArrayList<>();
         int selectedRepayment = c.getSelectRepayment();
@@ -108,118 +45,10 @@ public class Calculator {
         return list;
     }
 
-    private void calculateSum () {
-
-        int repaymentResultLength = 0;
-        RepaymentResultModel tempSumModel;
-        RepaymentResultModel repaymentResultModel;
-        for ( ArrayList<RepaymentResultModel> c : mRepaymentResultLists ) {
-
-            repaymentResultLength = c.size();
-
-            if ( repaymentResultLength > 0 ) {
-
-                for( int i = 0; i < repaymentResultLength; i++ ) {
-
-                    repaymentResultModel = c.get(i);
-
-                    if ( mRepaymentSumList.size() <= i ) {
-
-                        tempSumModel = RepaymentResultModel.newInstance(repaymentResultModel);
-
-                        if ( mRepaymentSumList.size() > 1 ) {
-                            tempSumModel.setTotalLoans( tempSumModel.getLoans().add( mRepaymentSumList.get(mRepaymentSumList.size()- 1).getTotalLoans() ) );
-                        }
-
-                        mRepaymentSumList.add( tempSumModel );
-
-                    } else {
-                        tempSumModel = mRepaymentSumList.get(i);
-
-                        tempSumModel.setInterest(tempSumModel.getInterest().add(repaymentResultModel.getInterest()) );
-                        tempSumModel.setLoans(tempSumModel.getLoans().add(repaymentResultModel.getLoans()));
-                        tempSumModel.setRemainingAmount(tempSumModel.getRemainingAmount().add(repaymentResultModel.getRemainingAmount()));
-
-                        tempSumModel.setRepayments(tempSumModel.getRepayments().add(repaymentResultModel.getRepayments()));
-                        //낸 원금
-//                        tempSumModel.setTotalLoans( tempSumModel.getLoans().add( mRepaymentSumList.get(mRepaymentSumList.size()- 1).getTotalLoans() ) );
-                    }
-
-                    if ( i == repaymentResultLength - 1 ) {
-                        tempSumModel.setIsLast(true);
-                    }
-
-                }
-
-            }
-        }
-
-        int sumListLength = mRepaymentSumList.size();
-
-        for( int i = 0; i < sumListLength; i++ ) {
-
-            tempSumModel = mRepaymentSumList.get(i);
-            //낸 원금
-            if ( i > 0 ) {
-                tempSumModel.setTotalLoans( tempSumModel.getLoans().add( mRepaymentSumList.get(i - 1).getTotalLoans() ) );
-            }
-
-
-        }
-
-
-        BigDecimal loans = null;
-        BigDecimal term = null;
-        BigDecimal interestRate = null;
-
-        for ( CalculationModel c : mModelList ) {
-
-            if ( loans == null ) {
-//                interestRate = new BigDecimal(c.getInterestRateText());
-//                term = new BigDecimal(c.getTermText());
-                loans = new BigDecimal(c.getLoansText());
-            } else {
-//                interestRate = interestRate.add(new BigDecimal(c.getInterestRateText()));
-//                term = term.add(new BigDecimal(c.getTermText()));
-                loans = loans.add(new BigDecimal(c.getLoansText()));
-            }
-        }
-
-        mSum = CalculationModel.newInstance();
-        mSum.setIsSum(true);
-//        mSum.setInterestRateText(interestRate.toPlainString());
-//        mSum.setTermText(term.toPlainString());
-        mSum.setLoansText(loans.toPlainString());
-
-    }
-
-    /**
-     * 이자율 등을 계산...오브젝트에 담는다.
-     */
-//    @Deprecated
-//    private void calculateResult( int selectedRepayment ) {
-//
-//        switch ( selectedRepayment ) {
-//            //원금 균등
-//            case 0 :
-//                calculateRepaymentLoans( selectedRepayment );
-//                break;
-//            //원리금 균등
-//            case 1 :
-//                calculateRepaymentLoansAndInterest( selectedRepayment );
-//                break;
-//            case 2 :
-//                calculateRepaymentLastRepayment( selectedRepayment );
-//                break;
-//        }
-//
-//    }
-
-
     /**
      * 0.원금
      */
-    private ArrayList<RepaymentResultModel> calculateRepaymentLoans( final CalculationModel calculationModel ) {
+    private static ArrayList<RepaymentResultModel> calculateRepaymentLoans( final CalculationModel calculationModel ) {
 
         String loansText = calculationModel.getLoansText();
         String termText = calculationModel.getTermText();
@@ -278,7 +107,7 @@ public class Calculator {
     /**
      * 1.원리금
      */
-    private ArrayList<RepaymentResultModel> calculateRepaymentLoansAndInterest( final CalculationModel calculationModel ) {
+    private static ArrayList<RepaymentResultModel> calculateRepaymentLoansAndInterest( final CalculationModel calculationModel ) {
 
 
         String loansText = calculationModel.getLoansText();
@@ -345,7 +174,7 @@ public class Calculator {
     /**
      * 2.만기일시
      */
-    private ArrayList<RepaymentResultModel> calculateRepaymentLastRepayment( final CalculationModel calculationModel ) {
+    private static ArrayList<RepaymentResultModel> calculateRepaymentLastRepayment( final CalculationModel calculationModel ) {
 
 
         String loansText = calculationModel.getLoansText();
@@ -412,33 +241,4 @@ public class Calculator {
         return repaymentResultList;
     }
 
-    public ArrayList<RepaymentResultModel> getRepaymentSumList() {
-        return mRepaymentSumList;
-    }
-
-    public CalculationModel getSum() {
-        return mSum;
-    }
-
-    public ArrayList<ArrayList<RepaymentResultModel>> getRepaymentResultLists() {
-        return mRepaymentResultLists;
-    }
-
-    public ArrayList<CalculationModel> getModelList() {
-        return mModelList;
-    }
-
-    public void setmModelList(ArrayList<CalculationModel> mModelList) {
-        this.mModelList = mModelList;
-    }
-
-    public void clear() {
-        if ( mRepaymentSumList != null ) {
-            this.mRepaymentSumList.clear();
-        }
-        if ( mRepaymentResultLists != null ) {
-            this.mRepaymentResultLists.clear();
-        }
-        this.mSum = null;
-    }
 }
