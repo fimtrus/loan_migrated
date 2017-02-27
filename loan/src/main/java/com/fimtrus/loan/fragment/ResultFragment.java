@@ -97,8 +97,15 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 		ResultFragment fragment = new ResultFragment();
 
 		fragment.mCalculationModel = c;
-		fragment.mRepaymentResultList = resultList;
+		fragment.mRepaymentResultList = Calculator.getInstance().calculate(c);
 
+		return fragment;
+	}
+	public static final ResultFragment newInstance (CalculationModel c) {
+
+		ResultFragment fragment = new ResultFragment();
+		fragment.mCalculationModel = c;
+        fragment.mRepaymentResultList = Calculator.getInstance().calculate(c);
 		return fragment;
 	}
 

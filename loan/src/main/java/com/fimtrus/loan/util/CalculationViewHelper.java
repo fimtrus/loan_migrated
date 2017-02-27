@@ -164,33 +164,19 @@ public class CalculationViewHelper implements View.OnClickListener {
 
 
         if ( count < 5 ) {
-//            setCalculationData();
+
             mModelList.add(CalculationModel.newInstance());
-//            mViewPager.setCurrentItem( count );
+
             if ( mPagerAdapter != null ) {
                 mPagerAdapter.notifyDataSetChanged();
             }
             setActionDoneKey();
             mViewPager.setCurrentItem(count, true);
 
-//            displayCalculationData();
         } else {
             Toast.makeText(mContext, R.string.add_max, Toast.LENGTH_SHORT).show();
         }
 
-//        if ( mModelList.size() < 5 ) {
-
-//            mModelList.add(newCalculationView());
-//
-//            if ( mPagerAdapter != null ) {
-//                mPagerAdapter.notifyDataSetChanged();
-////                setIndex(mModelList.size() - 1);
-//            }
-//        } else {
-//            Toast.makeText(mContext, "", Toast.LENGTH_SHORT);
-//        }
-
-//        mCalculationList.add(CalculationModel.newInstance());
 
 
     }

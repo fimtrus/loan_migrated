@@ -15,6 +15,8 @@ import com.fimtrus.loan.R;
 import com.fimtrus.loan.fragment.ResultFragment;
 import com.fimtrus.loan.fragment.SearchFragment;
 import com.fimtrus.loan.util.CalculationViewHelper;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 
 import java.util.HashMap;
@@ -28,7 +30,7 @@ public class MainActivity extends BaseActivity {
 	protected boolean flag;
 	private SearchFragment mSearchFragment;
 	private ResultFragment mResultFragment;
-//	private AdView mAdMobView;
+	private AdView mAdMobView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,7 @@ public class MainActivity extends BaseActivity {
 
 		CalculationViewHelper.clearField();
 
-//		mAdMobView = (AdView) findViewById(R.id.adView);
+		mAdMobView = (AdView) findViewById(R.id.adView);
 
 		mBackHandler = new Handler() {
 			@Override
@@ -70,8 +72,8 @@ public class MainActivity extends BaseActivity {
 	private void initializeView() {
 		// mSplashHandler.sendEmptyMessageDelayed(0, 2000);
 
-//		AdRequest adRequest = new AdRequest.Builder().build();
-//		mAdMobView.loadAd(adRequest);
+		AdRequest adRequest = new AdRequest.Builder().build();
+		mAdMobView.loadAd(adRequest);
 		CommonApplication.getInstance().trackScreenView(TAG);
 	}
 
@@ -102,13 +104,13 @@ public class MainActivity extends BaseActivity {
 //
 //
 //	}
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+//	@Override
+//	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		// getMenuInflater().inflate(R.menu.calculation, menu);
-		getMenuInflater().inflate(R.menu.calculation, menu);
-		return true;
-	}
+//		getMenuInflater().inflate(R.menu.calculation, menu);
+//		return true;
+//	}
 
 	@Override
 	public void onBackPressed() {
@@ -130,17 +132,17 @@ public class MainActivity extends BaseActivity {
 
 	@Override
 	protected void onPause() {
-//		if (mAdMobView != null) {
-//			mAdMobView.pause();
-//		}
+		if (mAdMobView != null) {
+			mAdMobView.pause();
+		}
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
-//		if (mAdMobView != null) {
-//			mAdMobView.resume();
-//		}
+		if (mAdMobView != null) {
+			mAdMobView.resume();
+		}
 		super.onResume();
 	}
 

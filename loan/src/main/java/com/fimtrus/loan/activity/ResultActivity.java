@@ -33,13 +33,13 @@ public class ResultActivity extends BaseActivity {
 	private static final String TAG = ResultActivity.class.getSimpleName();
 
 	private AdView mAdMobView;
-	private ArrayList<CalculationModel> mModelList = null;
-	private FragmentManager mFragmentManager;
+//	private ArrayList<CalculationModel> mModelList = null;
+	private android.support.v4.app.FragmentManager mFragmentManager;
 	private ResultFragment mResultFragment;
-
-	private ViewPager mViewPager;
-	private ResultViewPagerAdapter mPagerAdapter;
-	private SlidingTabLayout mSlidingTabLayout;
+//
+//	private ViewPager mViewPager;
+//	private ResultViewPagerAdapter mPagerAdapter;
+//	private SlidingTabLayout mSlidingTabLayout;
 	private CommonDialogs mDialogs;
 
 
@@ -69,17 +69,17 @@ public class ResultActivity extends BaseActivity {
 		mAdMobView = (AdView) findViewById(R.id.adView);
 
 
-		mModelList = Calculator.getInstance().getModelList();
-
-		mViewPager = (ViewPager) findViewById(R.id.viewpager_result);
-
-		mSlidingTabLayout = (SlidingTabLayout ) findViewById(R.id.sliding_tab);
-
-		mPagerAdapter = new ResultViewPagerAdapter(this, getSupportFragmentManager(), mViewPager);
-
-		mViewPager.setAdapter(mPagerAdapter);
-		mSlidingTabLayout.setDistributeEvenly(true);
-		mSlidingTabLayout.setViewPager(mViewPager);
+//		mModelList = Calculator.getInstance().getModelList();
+//
+//		mViewPager = (ViewPager) findViewById(R.id.viewpager_result);
+//
+//		mSlidingTabLayout = (SlidingTabLayout ) findViewById(R.id.sliding_tab);
+//
+//		mPagerAdapter = new ResultViewPagerAdapter(this, getSupportFragmentManager(), mViewPager);
+//
+//		mViewPager.setAdapter(mPagerAdapter);
+//		mSlidingTabLayout.setDistributeEvenly(true);
+//		mSlidingTabLayout.setViewPager(mViewPager);
 
 		mDialogs = new CommonDialogs(this);
 
@@ -112,16 +112,17 @@ public class ResultActivity extends BaseActivity {
 
 		CommonApplication.getInstance().trackScreenView(TAG);
 
-		new ResultTask().execute();
+//		new ResultTask().execute();
 	}
 
 	private void initializeFragments() {
 
-		mFragmentManager = getFragmentManager();
-
-//		mFragmentManager.beginTransaction()
-//				.add(R.id.content_frame, mResultFragment, "result")
-//				.commit();
+		mFragmentManager = getSupportFragmentManager();
+		CalculationModel c = getIntent().getParcelableExtra(Constant.EXTRA_CALCULATION_MODEL);
+		mResultFragment = ResultFragment.newInstance(c);
+		mFragmentManager.beginTransaction()
+				.add(R.id.content_frame, mResultFragment, "result")
+				.commit();
 //		 mFragmentManager.beginTransaction().add(R.id.fragment_splash,
 //		 mSplashFragment, "splash").commit();
 	}

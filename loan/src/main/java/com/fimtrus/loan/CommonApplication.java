@@ -29,7 +29,7 @@ public class CommonApplication extends Application {
 
         mInstance = this;
 
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         AnalyticsTrackers.initialize(CommonApplication.this);
         AnalyticsTrackers.getInstance().get(AnalyticsTrackers.Target.APP);

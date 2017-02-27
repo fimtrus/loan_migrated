@@ -87,6 +87,26 @@ public class Calculator {
 
 
     }
+    public ArrayList<RepaymentResultModel> calculate (CalculationModel c) {
+
+        ArrayList<RepaymentResultModel> list = new ArrayList<>();
+        int selectedRepayment = c.getSelectRepayment();
+
+        switch ( selectedRepayment ) {
+            //원금 균등
+            case 0 :
+                list = calculateRepaymentLoans( c );
+                break;
+            //원리금 균등
+            case 1 :
+                list = calculateRepaymentLoansAndInterest( c );
+                break;
+            case 2 :
+                list = calculateRepaymentLastRepayment( c );
+                break;
+        }
+        return list;
+    }
 
     private void calculateSum () {
 
@@ -199,7 +219,7 @@ public class Calculator {
     /**
      * 0.원금
      */
-    private void calculateRepaymentLoans( final CalculationModel calculationModel ) {
+    private ArrayList<RepaymentResultModel> calculateRepaymentLoans( final CalculationModel calculationModel ) {
 
         String loansText = calculationModel.getLoansText();
         String termText = calculationModel.getTermText();
@@ -252,14 +272,13 @@ public class Calculator {
 
             }
         }
-
-        mRepaymentResultLists.add(repaymentResultList);
+        return repaymentResultList;
     }
 
     /**
      * 1.원리금
      */
-    private void calculateRepaymentLoansAndInterest( final CalculationModel calculationModel ) {
+    private ArrayList<RepaymentResultModel> calculateRepaymentLoansAndInterest( final CalculationModel calculationModel ) {
 
 
         String loansText = calculationModel.getLoansText();
@@ -320,15 +339,13 @@ public class Calculator {
 
             }
         }
-        mRepaymentResultLists.add(repaymentResultList);
-//		Log.d("", "RESULT : " + Util.toNumFormat((int) repaymentResult));
-//		model.setReplayments(replayments);
+        return repaymentResultList;
     }
 
     /**
      * 2.만기일시
      */
-    private void calculateRepaymentLastRepayment( final CalculationModel calculationModel ) {
+    private ArrayList<RepaymentResultModel> calculateRepaymentLastRepayment( final CalculationModel calculationModel ) {
 
 
         String loansText = calculationModel.getLoansText();
@@ -392,7 +409,7 @@ public class Calculator {
 
             }
         }
-        mRepaymentResultLists.add(repaymentResultList);
+        return repaymentResultList;
     }
 
     public ArrayList<RepaymentResultModel> getRepaymentSumList() {
