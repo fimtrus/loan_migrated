@@ -1,0 +1,58 @@
+{
+  "project_info": {
+    "project_number": "807182276600",
+    "firebase_url": "https://loan-44ab5.firebaseio.com",
+    "project_id": "loan-44ab5",
+    "storage_bucket": "loan-44ab5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:807182276600:android:35d4f028d7ba78fc",
+        "android_client_info": {
+          "package_name": "com.fimtrus.loan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "807182276600-bbrdlusf6jhac9lp9a7nnpauf6h6cbac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fimtrus.loan",
+            "certificate_hash": "2fc08d0ab34720bdc0471ca183a217b87ffd3b2e"
+          }
+        },
+        {
+          "client_id": "807182276600-35e6g1p1jmgin460i5e1iootob16ts4t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fimtrus.loan",
+            "certificate_hash": "f4397d6709a5c8bd13868e2202e7545002e0661e"
+          }
+        },
+        {
+          "client_id": "807182276600-8brdov4q10updiujkodmnnff9p8dr1j3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEAvUDc1KJz674O4SSAg1ibe-EuKdgC10"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

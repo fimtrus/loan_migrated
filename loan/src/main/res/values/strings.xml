@@ -42,4 +42,9 @@
     <string name="export">export...</string>
     <string name="total">Total</string>
     <string name="toast_save_denied">Should grant storage authority for saving.</string>
+    <!-- ADMOB -->
+    <string name="banner_ad_unit_id" translatable="false">ca-app-pub-8496430300989498/9888986765</string>
+    <!-- FACEBOOK -->
+    <string name="facebook_application_id" translatable="false">1464409460236430</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fbAPP_ID</string>
 </resources>
