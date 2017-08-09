@@ -141,6 +141,42 @@
                     android:orientation="horizontal" >
 
                     <TextView
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:text="@string/holding_period" />
+
+                    <EditText
+                        android:id="@+id/edittext_holding_period"
+                        style="@style/disableTextColor"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:enabled="false"
+                        android:gravity="center_horizontal"
+                        android:inputType="number"
+                        android:singleLine="true" >
+                    </EditText>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:gravity="center"
+                        android:text="@string/months" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal" >
+
+                    <TextView
                         android:layout_width="@dimen/label_total_interest"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"

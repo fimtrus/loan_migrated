@@ -1,26 +1,14 @@
 package com.fimtrus.loan.fragment;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Date;
-
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
-import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,17 +29,20 @@ import android.widget.Toast;
 
 import com.fimtrus.loan.AnalyticsTrackers;
 import com.fimtrus.loan.CommonApplication;
-import com.fimtrus.loan.Manifest;
 import com.fimtrus.loan.R;
 import com.fimtrus.loan.model.CalculationModel;
+import com.fimtrus.loan.model.Constant;
+import com.fimtrus.loan.model.RepaymentResultModel;
 import com.fimtrus.loan.util.Calculator;
 import com.fimtrus.loan.util.PinchToZoom;
 import com.fimtrus.loan.util.Util;
-import com.fimtrus.loan.model.Constant;
-import com.fimtrus.loan.model.RepaymentResultModel;
 import com.xrigau.syncscrolling.view.EnhancedScrollView;
 
-import javax.xml.transform.Result;
+import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * SearchFragment.java
@@ -75,6 +66,7 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 	private EditText mInterestRateEditText;
 	private EditText mTermEditText;
 	private EditText mTotalInterestEditText;
+	private EditText mHoldingPeriodEditText;
 	private ArrayList<RepaymentResultModel> mRepaymentResultList;
 	private BigDecimal mLoans;
 	private Float mInterestRate;
@@ -141,6 +133,7 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 		mTermEditText = (EditText) mRootLayout.findViewById(R.id.edittext_term);	
 		mTotalInterestEditText = (EditText) mRootLayout.findViewById(R.id.edittext_total_interest);	
 		mTotalAmountEditText = (EditText) mRootLayout.findViewById(R.id.edittext_total_amount);
+		mHoldingPeriodEditText = (EditText) mRootLayout.findViewById(R.id.edittext_holding_period);
 
 //		mPinchToZoom = PinchToZoom.newInstance(getActivity(), mContentLayout);
 
@@ -214,6 +207,7 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 		String loansText = mCalculationModel.getLoansText();
 		String interestRateText = mCalculationModel.getInterestRateText();
 		String termText = mCalculationModel.getTermText();
+		String holdingPeriodText = mCalculationModel.getHodlingPeriodText();
 
 
 		boolean isSum = mCalculationModel.isSum();
@@ -238,6 +232,11 @@ public class ResultFragment extends android.support.v4.app.Fragment {
 			} else {
 
 				mTerm = Double.valueOf(termText);
+			}
+			if( "".equals(holdingPeriodText) || "0".equals(holdingPeriodText)) {
+				((LinearLayout)mHoldingPeriodEditText.getParent()).setVisibility(View.GONE);
+			} else {
+				mHoldingPeriodEditText.setText(holdingPeriodText);
 			}
 		}
 

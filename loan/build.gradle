@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
     productFlavors {
     }
 
@@ -39,6 +43,7 @@ dependencies {
     // FirebaseUI Auth only
     // FirebaseUI Storage only
     // Single target that includes all FirebaseUI libraries above
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.firebase:firebase-core:10.2.0'
     compile 'com.google.firebase:firebase-ads:10.2.0'
     compile 'com.firebaseui:firebase-ui-database:1.2.0'

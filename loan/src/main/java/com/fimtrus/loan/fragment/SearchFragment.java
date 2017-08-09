@@ -1,20 +1,18 @@
 package com.fimtrus.loan.fragment;
 
-import java.util.Locale;
-
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
@@ -30,6 +28,8 @@ import com.fimtrus.loan.activity.ResultActivity;
 import com.fimtrus.loan.model.CalculationModel;
 import com.fimtrus.loan.model.Constant;
 import com.fimtrus.loan.util.Util;
+
+import java.util.Locale;
 
 /**
  * SearchFragment.java
@@ -47,6 +47,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 	private EditText mLoansEditText;
 	private EditText mInterestRateEditText;
 	private EditText mTermEditText;
+	private EditText mHoldingPeriodEditText;
 	private Button mCalculationButton;
 	private TextView mHintTextView;
 	private TextView mLoanTextView;
@@ -88,6 +89,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 		mInterestRateEditText = (EditText) mRootLayout
 				.findViewById(R.id.edittext_interest_rate);
 		mTermEditText = (EditText) mRootLayout.findViewById(R.id.edittext_term);
+		mHoldingPeriodEditText = (EditText) mRootLayout.findViewById(R.id.edittext_holding_period);
 		mCalculationButton = (Button) mRootLayout
 				.findViewById(R.id.calculation);
 		mHintTextView = (TextView) mRootLayout.findViewById(R.id.textview_hint);
@@ -197,7 +199,24 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
             }
         });
 
-        mTermEditText.setOnEditorActionListener(this);
+        mHoldingPeriodEditText.setOnEditorActionListener(this);
+
+        mRepaymentSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.i("JJH", "position : " + position);
+                if( position == 2 ) {
+                    ((View)mHoldingPeriodEditText.getParent()).setVisibility(View.GONE);
+                } else {
+                    ((View)mHoldingPeriodEditText.getParent()).setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 	}
 
@@ -209,17 +228,23 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
         String loansText = "";
         String interestRateText = "";
         String termText = "";
+        String holdingPeriodText = "";
 
         selectedType = mRepaymentSpinner.getSelectedItemPosition();
         loansText = mLoansEditText.getText().toString();
         interestRateText = mInterestRateEditText.getText().toString();
         termText = mTermEditText.getText().toString();
+		holdingPeriodText = mHoldingPeriodEditText.getText().toString();
 
         //값이 없을 경우 예외처리.
         boolean isEmpty = false;
 
+        if("".equals(holdingPeriodText) || selectedType == 2) {
+            holdingPeriodText = "0";
+        }
         if ("".equals(loansText)
                 || "".equals(interestRateText)
+                || "".equals(holdingPeriodText)
                 || "".equals(termText)) {
             isEmpty = true;
         }
@@ -232,15 +257,20 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
                     AnalyticsTrackers.TRACKER_ACTION_CALCULATION,
                     "No Input Field"
             );
-
             return;
+        }
 
+        if(Integer.valueOf(holdingPeriodText) >= Integer.valueOf(termText)) {
+            Toast.makeText(getActivity(), R.string.holding_period_must_be_less_than_term, Toast.LENGTH_SHORT).show();
+            return;
         }
 
         c.setSelectRepayment(selectedType);
         c.setLoansText(loansText);
         c.setInterestRateText(interestRateText);
         c.setTermText(termText);
+        c.setHodlingPeriodText(holdingPeriodText);
+
 
         Intent intent = new Intent(getActivity(), ResultActivity.class);
         intent.putExtra(Constant.EXTRA_CALCULATION_MODEL, c);
@@ -264,7 +294,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener,
 
 	@Override
 	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-		if (v.getId() == R.id.edittext_term
+		if (v.getId() == R.id.edittext_holding_period
 				&& actionId == EditorInfo.IME_ACTION_DONE) { // 뷰의 id를 식별, 키보드의
 																// 완료 키 입력 검출
 			mCalculationButton.performClick();

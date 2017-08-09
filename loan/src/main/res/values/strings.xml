@@ -26,7 +26,10 @@
     <string name="remaining_amount">Remaining Amount</string>
     <string name="total_principal">Total Principal</string>
     <string name="total_amount">Toal</string>
-    
+    <string name="holding_period">Holding Period</string>
+
+    <string name="holding_period_must_be_less_than_term">Holding period must be less than term</string>
+
     <string name="hint_text">
         <![CDATA[
 		<div>*<<font color="blue"><strong> equal principal payments</strong></<font> : equal principal payments per time period.</div>
@@ -47,4 +50,5 @@
     <!-- FACEBOOK -->
     <string name="facebook_application_id" translatable="false">1464409460236430</string>
     <string name="facebook_login_protocol_scheme" translatable="false">fbAPP_ID</string>
+
 </resources>

@@ -1,20 +1,30 @@
 package com.fimtrus.loan.model;
 
-import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import java.math.BigDecimal;
 
 /**
  * Created by fimtrus on 16. 3. 18..
  */
 public class CalculationModel implements Parcelable {
 
-    private int selectRepayment = -1; //월상환금
-    private String loansText = new String(); //납입원금
-    private String interestRateText = new String(); //납입이자
-    private String termText = new String(); //기간
+    private int    selectRepayment   = -1; //월상환금
+    private String loansText         = new String(); //납입원금
+    private String interestRateText  = new String(); //납입이자
+    private String termText          = new String(); //기간
+    private String hodlingPeriodText = new String(); //거치기간
+
+    public CalculationModel() {
+    }
+
+    public String getHodlingPeriodText() {
+        return hodlingPeriodText;
+    }
+
+    public void setHodlingPeriodText(String hodlingPeriodText) {
+        this.hodlingPeriodText = hodlingPeriodText;
+    }
+
 
     private boolean isSum = false;
 
@@ -57,10 +67,6 @@ public class CalculationModel implements Parcelable {
     }
 
 
-
-    public CalculationModel() {
-    }
-
     public boolean isSum() {
         return isSum;
     }
@@ -80,7 +86,8 @@ public class CalculationModel implements Parcelable {
         dest.writeString(this.loansText);
         dest.writeString(this.interestRateText);
         dest.writeString(this.termText);
-        dest.writeByte(isSum ? (byte) 1 : (byte) 0);
+        dest.writeString(this.hodlingPeriodText);
+        dest.writeByte(this.isSum ? (byte) 1 : (byte) 0);
     }
 
     protected CalculationModel(Parcel in) {
@@ -88,6 +95,7 @@ public class CalculationModel implements Parcelable {
         this.loansText = in.readString();
         this.interestRateText = in.readString();
         this.termText = in.readString();
+        this.hodlingPeriodText = in.readString();
         this.isSum = in.readByte() != 0;
     }
 

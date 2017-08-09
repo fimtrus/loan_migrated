@@ -1,7 +1,6 @@
 package com.fimtrus.loan.util;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 
 import com.fimtrus.loan.model.CalculationModel;
@@ -53,13 +52,15 @@ public class Calculator {
         String loansText = calculationModel.getLoansText();
         String termText = calculationModel.getTermText();
         String interestRateText = calculationModel.getInterestRateText();
+        String hodlingPeriodText = calculationModel.getHodlingPeriodText();
 
         BigDecimal loans = new BigDecimal(loansText );
         Double term =  Double.valueOf(termText);
+        Double holdingPeriod =  Double.valueOf(hodlingPeriodText);
         Float interestRate = Float.valueOf(interestRateText);
         //월불입금
         //((1+B4)^B5*B4)/((1+B4)^B5-1)/12
-        BigDecimal repaymentResult = loans.divide( BigDecimal.valueOf(term), 10, BigDecimal.ROUND_HALF_UP );
+        BigDecimal repaymentResult = loans.divide( BigDecimal.valueOf(term - holdingPeriod), 10, BigDecimal.ROUND_HALF_UP );
 //		double repaymentResult = mLoans * ( Math.pow( ( 1 + ( mInterestRate / 100 ) ) , mTerm / 12 ) * ( mInterestRate / 100 ) )
 //				/ ( Math.pow( ( 1 + ( mInterestRate / 100 ) ) , mTerm / 12 ) - 1 ) / 12 ;
 
@@ -69,10 +70,12 @@ public class Calculator {
 
         loansTemp = loans;//.setScale(2, BigDecimal.ROUND_HALF_UP);
         RepaymentResultModel model;
+        //상환기간 + 거치기간
+        int totalTerm = term.intValue();
 
         ArrayList<RepaymentResultModel> repaymentResultList = new ArrayList<RepaymentResultModel>();
 
-        for ( int i = 0; i <= term.intValue(); i++ ) {
+        for ( int i = 0; i <= totalTerm; i++ ) {
 
             if ( i == 0 ) {
 
@@ -85,11 +88,17 @@ public class Calculator {
                 BigDecimal interestResult =  loansTemp.divide(BigDecimal.valueOf(12), BigDecimal.ROUND_HALF_UP).multiply( BigDecimal.valueOf( (interestRate / 100 ) ), MathContext.DECIMAL128 );  //loansTemp / 12 * ( mInterestRate / 100 ) ;
 
                 model = new RepaymentResultModel();
-                model.setRepayments(  repaymentResult.add(interestResult ) ); //상환그,ㅁ
-                model.setLoans(  repaymentResult ); //납입원금
                 model.setInterest(  interestResult ); //이자
-                //잔금
-                model.setRemainingAmount(  repaymentResultList.get(repaymentResultList.size()- 1).getRemainingAmount().subtract(model.getLoans()) );
+
+                if(i <= holdingPeriod.intValue()) {
+                    model.setRepayments(  interestResult ); //상환금
+                    model.setLoans( new BigDecimal(0) ); //납입원금
+                    model.setRemainingAmount(  repaymentResultList.get(repaymentResultList.size()- 1).getRemainingAmount() );//잔금
+                } else {
+                    model.setRepayments(  repaymentResult.add(interestResult ) ); //상환금
+                    model.setLoans(  repaymentResult ); //납입원금
+                    model.setRemainingAmount(  repaymentResultList.get(repaymentResultList.size()- 1).getRemainingAmount().subtract(model.getLoans()) );//잔금
+                }
                 //낸 원금
                 model.setTotalLoans( model.getLoans().add( repaymentResultList.get(repaymentResultList.size()- 1).getTotalLoans() ) );
 
@@ -113,9 +122,11 @@ public class Calculator {
         String loansText = calculationModel.getLoansText();
         String termText = calculationModel.getTermText();
         String interestRateText = calculationModel.getInterestRateText();
+        String holdingPeriodText = calculationModel.getHodlingPeriodText();
 
         BigDecimal loans = new BigDecimal(loansText );
         Double term =  Double.valueOf(termText);
+        Double holdingPeriod = Double.valueOf(holdingPeriodText);
         Float interestRate = Float.valueOf(interestRateText);
 
 
@@ -133,11 +144,13 @@ public class Calculator {
 //		//((1 + 이자율 ÷ 12)^기간
 //		double temp2 = Math.pow( ( 1 + ( mInterestRate / 100 ) / 12 ), mTerm);
 
-        BigDecimal temp = loans.multiply( BigDecimal.valueOf(  ((double)interestRate / 100) ), MathContext.DECIMAL128 ).divide( BigDecimal.valueOf((double)12), 10, BigDecimal.ROUND_HALF_UP).multiply( BigDecimal.valueOf( Math.pow( ( (double)1 + ( (double) interestRate / 100 ) / (double)12 ) , term )), MathContext.DECIMAL128);
-        BigDecimal temp2 = BigDecimal.valueOf( Math.pow( ( (double)1 + ( (double)interestRate / 100 ) / 12 ), term));
+        BigDecimal temp = loans.multiply( BigDecimal.valueOf(  ((double)interestRate / 100) ), MathContext.DECIMAL128 ).divide( BigDecimal.valueOf((double)12), 10, BigDecimal.ROUND_HALF_UP).multiply( BigDecimal.valueOf( Math.pow( ( (double)1 + ( (double) interestRate / 100 ) / (double)12 ) , term - holdingPeriod )), MathContext.DECIMAL128);
+        BigDecimal temp2 = BigDecimal.valueOf( Math.pow( ( (double)1 + ( (double)interestRate / 100 ) / 12 ), term - holdingPeriod));
         BigDecimal repaymentResult = temp.divide( temp2.subtract(BigDecimal.valueOf(1) ), BigDecimal.ROUND_HALF_UP );
 
-        for ( int i = 0; i <= term.intValue(); i++ ) {
+        int totalTerm = term.intValue();
+
+        for ( int i = 0; i <= totalTerm; i++ ) {
 
             if ( i == 0 ) {
 
@@ -150,13 +163,20 @@ public class Calculator {
                 BigDecimal interestResult =  loansTemp.divide(BigDecimal.valueOf(12), 10, BigDecimal.ROUND_HALF_UP).multiply( BigDecimal.valueOf( ((double) interestRate / 100 ) ), MathContext.DECIMAL128 );  //loansTemp / 12 * ( mInterestRate / 100 ) ;
 
                 model = new RepaymentResultModel();
-                model.setRepayments(  repaymentResult  ); //상환그,ㅁ
 
-                model.setLoans(  repaymentResult.subtract( interestResult ) ); //납입원금
+
+
+                if(i <= holdingPeriod.intValue()) {
+                    model.setRepayments(  interestResult ); //상환금
+                    model.setLoans( new BigDecimal(0) ); //납입원금
+                    model.setRemainingAmount(  repaymentResultList.get(repaymentResultList.size()- 1).getRemainingAmount() );//잔금
+                } else {
+                    model.setRepayments(  repaymentResult  ); //상환그,ㅁ
+                    model.setLoans(  repaymentResult.subtract( interestResult ) ); //납입원금
+                    model.setRemainingAmount(  repaymentResultList.get(repaymentResultList.size()- 1).getRemainingAmount().subtract( model.getLoans() ) );//잔금
+                }
 
                 model.setInterest(  interestResult ); //이자
-                //잔금
-                model.setRemainingAmount(  repaymentResultList.get(repaymentResultList.size()- 1).getRemainingAmount().subtract( model.getLoans() ) );
                 //낸 원금
                 model.setTotalLoans( model.getLoans().add( repaymentResultList.get(repaymentResultList.size()- 1).getTotalLoans()));
 
@@ -180,9 +200,11 @@ public class Calculator {
         String loansText = calculationModel.getLoansText();
         String termText = calculationModel.getTermText();
         String interestRateText = calculationModel.getInterestRateText();
+        String holdingPeriodText = calculationModel.getHodlingPeriodText();
 
         BigDecimal loans = new BigDecimal(loansText );
         Double term =  Double.valueOf(termText);
+        Double hodlingPeriod =  Double.valueOf(holdingPeriodText);
         Float interestRate = Float.valueOf(interestRateText);
 
 
@@ -201,14 +223,16 @@ public class Calculator {
         loansTemp = loans;
         RepaymentResultModel model;
 
-        for ( int i = 0; i <=  term; i++ ) {
+        int totalTerm = term.intValue();
+
+        for ( int i = 0; i <=  totalTerm; i++ ) {
 
             if ( i == 0 ) {
 
                 model = new RepaymentResultModel();
                 model.setRemainingAmount( loansTemp );
                 repaymentResultList.add(model);
-            } else if ( i == term ) {
+            } else if ( i == totalTerm ) {
 
                 //이자. 잔액 / 12 * 할부금리
                 BigDecimal interestResult = loansTemp.multiply(BigDecimal.valueOf( (( interestRate / 100 ) / 12)), MathContext.DECIMAL128);

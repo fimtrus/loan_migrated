@@ -27,7 +27,7 @@
     <string name="remaining_amount">잔금</string>
     <string name="total_principal">납입원금 합계</string>
     <string name="total_amount">합계(원금+이자)</string>
-    
+    <string name="holding_period">거치기간</string>
     <string name="hint_text">
         <![CDATA[
 		<div>*<<font color="blue"><strong> 원금균등상환</strong></<font> : 매달 원금을 동일하게 상환, 전체 원금이 줄어들기 때문에 이자가 매달 줄어든다.</div>
@@ -44,4 +44,5 @@
     <string name="export">저장중..</string>
     <string name="total">합 계</string>
     <string name="toast_save_denied">사진 저장을 위해서는 저장공간 접근 권한을 설정하셔야 합니다</string>
+    <string name="holding_period_must_be_less_than_term">거치기간은 대출기간보다 작아야 합니다</string>
 </resources>
